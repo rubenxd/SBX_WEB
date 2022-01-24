@@ -1,0 +1,133 @@
+﻿@page "/ClienteCrudPage/{Id}"
+@using SBX_WEB.Data
+@using Radzen;
+@inject ClienteServicio clienservicio
+@inject NavigationManager NavigationManager
+
+<RadzenTemplateForm TItem="Cliente" Submit=@OnSubmit Data=@cliente>
+    <RadzenFieldset Text="Cliente">
+        <div class="alert alert-primary" role="alert">
+            @Accion
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-4 align-items-center d-flex">
+                <RadzenLabel Text="DNI" />
+            </div>
+            <div class="col-md-8">
+                <RadzenTextBox style="width: 100%;" Name="DNI" @bind-Value=@cliente.DNI/>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-4 align-items-center d-flex">
+                <RadzenLabel Text="Nombre" />
+            </div>
+            <div class="col-md-8">
+                <RadzenTextBox style="width: 100%;" Name="Nombre" @bind-Value=@cliente.Nombre/>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-4 align-items-center d-flex">
+                <RadzenLabel Text="Ciudad" />
+            </div>
+            <div class="col-md-8">
+                <RadzenTextBox style="width: 100%;" Name="Ciudad" @bind-Value=@cliente.Ciudad/>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-4 align-items-center d-flex">
+                <RadzenLabel Text="Direccion" />
+            </div>
+            <div class="col-md-8">
+                <RadzenTextBox style="width: 100%;" Name="Direccion" @bind-Value=@cliente.Direccion/>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-4 align-items-center d-flex">
+                <RadzenLabel Text="Telefono" />
+            </div>
+            <div class="col-md-8">
+                <RadzenTextBox style="width: 100%;" Name="telefono" @bind-Value=@cliente.telefono/>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-4 align-items-center d-flex">
+                <RadzenLabel Text="Celular" />
+            </div>
+            <div class="col-md-8">
+                <RadzenTextBox style="width: 100%;" Name="celular" @bind-Value=@cliente.Celular/>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-4 align-items-center d-flex">
+                <RadzenLabel Text="Email" />
+            </div>
+            <div class="col-md-8">
+                <RadzenTextBox style="width: 100%;" Name="Email" @bind-Value=@cliente.Email/>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-4 align-items-center d-flex">
+                <RadzenLabel Text="Sitio web" />
+            </div>
+            <div class="col-md-8">
+                <RadzenTextBox style="width: 100%;" Name="Sitio web" @bind-Value=@cliente.SitioWeb/>
+            </div>
+        </div>
+    </RadzenFieldset>
+    <div class="row justify-content-center">
+        <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
+            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="note_add" Text="Nuevo" Click="@limpiar" />
+            <RadzenButton ButtonStyle="ButtonStyle.Secondary" ButtonType="ButtonType.Submit" Icon="save" Text="Guardar" style="display: inline-block; margin-left: 10px;" />
+            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="cancel" style="display: inline-block; margin-left: 10px;" Text="Cancelar" Click="@Cancel" />
+        </div>
+    </div>
+</RadzenTemplateForm>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    public bool Guardar { get; set; } = false;
+    public string Accion { get; set; } = "Actualizar Cliente";
+    Cliente cliente = new Cliente();
+
+    protected override async Task OnInitializedAsync()
+    {
+        cliente = await Task.Run(() => clienservicio.GetClienteAsync(Id));
+    }
+
+    protected async void OnSubmit(Cliente arg)
+    {
+        //guardar
+        if (Guardar)
+        {
+            await clienservicio.InsertClienteAsync(arg);
+        NavigationManager.NavigateTo("ClientePage");
+        }
+        else
+        {
+            await clienservicio.UpdateClienteAsync(arg);
+        NavigationManager.NavigateTo("ClientePage");
+        }
+        
+        //
+    }
+    void Cancel()
+    {
+        //
+        NavigationManager.NavigateTo("ClientePage");
+    }
+    void limpiar()
+    {
+        Guardar = true;
+        Accion = "Nuevo cliente";
+        cliente = new Cliente();
+    }
+
+}
