@@ -33,6 +33,7 @@ namespace SBX_WEB
             services.AddSingleton<WeatherForecastService>();
             services.AddScoped<DialogService>();
             services.AddScoped<ClienteServicio>();
+            services.AddScoped<ProveedorServicio>();
             #region Connection String
             services.AddDbContext<AppDBContext>(item => item.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             #endregion

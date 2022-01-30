@@ -64,7 +64,7 @@
     } 
     async Task Registro()
     {
-        await dialogService.OpenAsync<ClienteCrearPage>($"",
+        await dialogService.OpenAsync<ProveedorCrearPage>($"",
                new Dictionary<string, object>() { },
                new DialogOptions() { Width = "60%",Height="85%" });
         await Actualizar();

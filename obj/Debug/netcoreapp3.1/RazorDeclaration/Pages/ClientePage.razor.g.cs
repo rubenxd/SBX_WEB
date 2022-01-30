@@ -13,84 +13,84 @@ namespace SBX_WEB.Pages
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
 #nullable restore
-#line 1 "C:\Ruben\SBX_WEB\SBX_WEB\_Imports.razor"
+#line 1 "C:\Ruben\SBX_WEB\_Imports.razor"
 using System.Net.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Ruben\SBX_WEB\SBX_WEB\_Imports.razor"
+#line 2 "C:\Ruben\SBX_WEB\_Imports.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Ruben\SBX_WEB\SBX_WEB\_Imports.razor"
+#line 3 "C:\Ruben\SBX_WEB\_Imports.razor"
 using Microsoft.AspNetCore.Components.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Ruben\SBX_WEB\SBX_WEB\_Imports.razor"
+#line 4 "C:\Ruben\SBX_WEB\_Imports.razor"
 using Microsoft.AspNetCore.Components.Forms;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Ruben\SBX_WEB\SBX_WEB\_Imports.razor"
+#line 5 "C:\Ruben\SBX_WEB\_Imports.razor"
 using Microsoft.AspNetCore.Components.Routing;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Ruben\SBX_WEB\SBX_WEB\_Imports.razor"
+#line 6 "C:\Ruben\SBX_WEB\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "C:\Ruben\SBX_WEB\SBX_WEB\_Imports.razor"
+#line 7 "C:\Ruben\SBX_WEB\_Imports.razor"
 using Microsoft.JSInterop;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "C:\Ruben\SBX_WEB\SBX_WEB\_Imports.razor"
+#line 8 "C:\Ruben\SBX_WEB\_Imports.razor"
 using SBX_WEB;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 9 "C:\Ruben\SBX_WEB\SBX_WEB\_Imports.razor"
+#line 9 "C:\Ruben\SBX_WEB\_Imports.razor"
 using SBX_WEB.Shared;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 10 "C:\Ruben\SBX_WEB\SBX_WEB\_Imports.razor"
+#line 10 "C:\Ruben\SBX_WEB\_Imports.razor"
 using Radzen.Blazor;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ClientePage.razor"
+#line 2 "C:\Ruben\SBX_WEB\Pages\ClientePage.razor"
 using SBX_WEB.Data;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ClientePage.razor"
+#line 3 "C:\Ruben\SBX_WEB\Pages\ClientePage.razor"
 using Radzen;
 
 #line default
@@ -105,7 +105,7 @@ using Radzen;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 42 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ClientePage.razor"
+#line 42 "C:\Ruben\SBX_WEB\Pages\ClientePage.razor"
        
     RadzenDataGrid<Cliente> ordersGrid;
     bool isLoading = false;
@@ -165,7 +165,7 @@ using Radzen;
             __builder2.AddContent(4, "Estas seguro de Elimiar al cliente  ");
             __builder2.OpenElement(5, "b");
 #nullable restore
-#line 89 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ClientePage.razor"
+#line 89 "C:\Ruben\SBX_WEB\Pages\ClientePage.razor"
 __builder2.AddContent(6, DNI);
 
 #line default
@@ -175,7 +175,7 @@ __builder2.AddContent(6, DNI);
             __builder2.AddMarkupContent(7, "<b>-</b>");
             __builder2.OpenElement(8, "b");
 #nullable restore
-#line 89 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ClientePage.razor"
+#line 89 "C:\Ruben\SBX_WEB\Pages\ClientePage.razor"
 __builder2.AddContent(9, Nombre);
 
 #line default
@@ -196,7 +196,7 @@ __builder2.AddContent(9, Nombre);
             __builder2.AddMarkupContent(13, "\r\n");
         }
 #nullable restore
-#line 97 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ClientePage.razor"
+#line 97 "C:\Ruben\SBX_WEB\Pages\ClientePage.razor"
        );
 
         if(result == null)

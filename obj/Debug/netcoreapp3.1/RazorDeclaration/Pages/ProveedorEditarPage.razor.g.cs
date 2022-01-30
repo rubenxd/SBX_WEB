@@ -83,21 +83,21 @@ using Radzen.Blazor;
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Ruben\SBX_WEB\Pages\ClienteEditarPage.razor"
+#line 2 "C:\Ruben\SBX_WEB\Pages\ProveedorEditarPage.razor"
 using SBX_WEB.Data;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Ruben\SBX_WEB\Pages\ClienteEditarPage.razor"
+#line 3 "C:\Ruben\SBX_WEB\Pages\ProveedorEditarPage.razor"
 using Radzen;
 
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/ClienteEditarPage/{Id}")]
-    public partial class ClienteEditarPage : Microsoft.AspNetCore.Components.ComponentBase
+    [Microsoft.AspNetCore.Components.RouteAttribute("/ProveedorEditarPage/{Id}")]
+    public partial class ProveedorEditarPage : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -105,14 +105,14 @@ using Radzen;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 102 "C:\Ruben\SBX_WEB\Pages\ClienteEditarPage.razor"
+#line 102 "C:\Ruben\SBX_WEB\Pages\ProveedorEditarPage.razor"
        
     [Parameter]
     public int Id {get; set;}
 
-    Cliente cliente = new Cliente();
-    Cliente cliente2 = new Cliente();
-    Cliente cliente3 = new Cliente();
+    Proveedor proveedor = new Proveedor();
+    Proveedor proveedor2 = new Proveedor();
+
     double DNI_ = 0;
     double telefono_ = 0;
     double celular_ = 0;
@@ -122,29 +122,29 @@ using Radzen;
 
     protected override async Task OnInitializedAsync()
     {
-        cliente = await Task.Run(() => clienservicio.GetClienteAsync(Id));
-        dniValidar = cliente.DNI;
-        DNI_ = Convert.ToDouble(cliente.DNI);
-        telefono_ = Convert.ToDouble(cliente.telefono);
-        celular_ = Convert.ToDouble(cliente.Celular);
+        proveedor = await Task.Run(() => proveedorServicio.GetProveedorAsync(Id));
+        dniValidar = proveedor.DNI;
+        DNI_ = Convert.ToDouble(proveedor.DNI);
+        telefono_ = Convert.ToDouble(proveedor.telefono);
+        celular_ = Convert.ToDouble(proveedor.Celular);
     }   
 
-    protected async void OnSubmit(Cliente arg)
+    protected async void OnSubmit(Proveedor arg)
     {
         //validar DNI
          arg.DNI = DNI_.ToString();
         if (dniValidar != arg.DNI )
         {
-            cliente2 = await Task.Run(() => clienservicio.GetClienteXDNIAsync(arg.DNI));
-            if (cliente2 == null)
+            proveedor2 = await Task.Run(() => proveedorServicio.GetProveedorXDNIAsync(arg.DNI));
+            if (proveedor2 == null)
             {
                 arg.DNI = DNI_.ToString();
                 arg.telefono = telefono_.ToString();
                 arg.Celular = celular_.ToString();
-                v_ok = await clienservicio.UpdateClienteAsync(arg);
+                v_ok = await proveedorServicio.UpdateProveedorAsync(arg);
                 if (v_ok)
                 {
-                    NavigationManager.NavigateTo("ClientePage");
+                    NavigationManager.NavigateTo("ProveedorPage");
                 }
             }
             else
@@ -157,10 +157,10 @@ using Radzen;
             arg.DNI = DNI_.ToString();
             arg.telefono = telefono_.ToString();
             arg.Celular = celular_.ToString();
-             v_ok = await clienservicio.UpdateClienteAsync(arg);
+             v_ok = await proveedorServicio.UpdateProveedorAsync(arg);
                 if (v_ok)
                 {
-                    NavigationManager.NavigateTo("ClientePage");
+                    NavigationManager.NavigateTo("ProveedorPage");
                 }
         }
 
@@ -181,7 +181,7 @@ using Radzen;
             __builder2.AddContent(4, "DNI: ");
             __builder2.OpenElement(5, "b");
 #nullable restore
-#line 165 "C:\Ruben\SBX_WEB\Pages\ClienteEditarPage.razor"
+#line 165 "C:\Ruben\SBX_WEB\Pages\ProveedorEditarPage.razor"
 __builder2.AddContent(6, DNI);
 
 #line default
@@ -196,7 +196,7 @@ __builder2.AddContent(6, DNI);
             __builder2.AddMarkupContent(10, "\r\n");
         }
 #nullable restore
-#line 172 "C:\Ruben\SBX_WEB\Pages\ClienteEditarPage.razor"
+#line 172 "C:\Ruben\SBX_WEB\Pages\ProveedorEditarPage.razor"
     );
 
         if (result == null)
@@ -210,7 +210,7 @@ __builder2.AddContent(6, DNI);
     }
     void Cancel()
     {
-        NavigationManager.NavigateTo("ClientePage",true);
+        NavigationManager.NavigateTo("ProveedorPage",true);
     }
 
 #line default
@@ -218,7 +218,7 @@ __builder2.AddContent(6, DNI);
 #nullable disable
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private DialogService dialogService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ClienteServicio clienservicio { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ProveedorServicio proveedorServicio { get; set; }
     }
 }
 #pragma warning restore 1591
