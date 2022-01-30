@@ -22,11 +22,20 @@ namespace SBX_WEB.Data
         {
             return await _appDBContext.clientes.ToListAsync();
         }
+        public List<Cliente> GetAllCliente()
+        {
+            return  _appDBContext.clientes.ToList();
+        }
         #endregion
         #region Get Cliente by Id
         public async Task<Cliente> GetClienteAsync(int Id)
         {
             Cliente cliente = await _appDBContext.clientes.FirstOrDefaultAsync(c => c.Id.Equals(Id));
+            return cliente;
+        }
+        public async Task<Cliente> GetClienteXDNIAsync(string DNI)
+        {
+            Cliente cliente = await _appDBContext.clientes.FirstOrDefaultAsync(c => c.DNI.Equals(DNI));
             return cliente;
         }
         #endregion

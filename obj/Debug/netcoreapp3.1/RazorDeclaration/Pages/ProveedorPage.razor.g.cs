@@ -83,21 +83,21 @@ using Radzen.Blazor;
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ClientePage.razor"
+#line 2 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ProveedorPage.razor"
 using SBX_WEB.Data;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ClientePage.razor"
+#line 3 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ProveedorPage.razor"
 using Radzen;
 
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/ClientePage")]
-    public partial class ClientePage : Microsoft.AspNetCore.Components.ComponentBase
+    [Microsoft.AspNetCore.Components.RouteAttribute("/ProveedorPage")]
+    public partial class ProveedorPage : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -105,21 +105,21 @@ using Radzen;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 42 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ClientePage.razor"
+#line 42 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ProveedorPage.razor"
        
-    RadzenDataGrid<Cliente> ordersGrid;
+    RadzenDataGrid<Proveedor> ordersGrid;
     bool isLoading = false;
     bool resultDialog;
     int IdGlobal = 0;
-    List<Data.Cliente> ClienteObj = new List<Data.Cliente>();
-    Data.Cliente ClienteObjEliminar = new Data.Cliente();
+    List<Data.Proveedor> ProveedorObj = new List<Data.Proveedor>();
+    Data.Proveedor ProveedorObjEliminar = new Data.Proveedor();
 
-    List<Data.Cliente> ClienteObjVerificar = new List<Data.Cliente>();
+    List<Data.Proveedor> ProveedorObjVerificar = new List<Data.Proveedor>();
     protected override async Task OnInitializedAsync()
     {
         isLoading = true;
-        ClienteObj = await Task.Run(() => clienservicio.GetAllClienteAsync());
-        ClienteObjVerificar = ClienteObj;
+        ProveedorObj = await Task.Run(() => proveedorServicio.GetAllProveedorAsync());
+        ProveedorObjVerificar = ProveedorObj;
         isLoading = false;
     }
     async Task Editar(int Id,string DNI, string Nombre)
@@ -127,7 +127,7 @@ using Radzen;
         await dialogService.OpenAsync<ClienteEditarPage>($"{DNI} - {Nombre}",
                new Dictionary<string, object>() { { "Id", Id } },
                new DialogOptions() { Width = "60%",Height="85%" });
-        NavigationManager.NavigateTo("ClientePage",true);
+        NavigationManager.NavigateTo("ProveedorPage",true);
     } 
     async Task Registro()
     {
@@ -139,14 +139,14 @@ using Radzen;
     async Task  Actualizar()
     {
         isLoading = true;
-        ClienteObj = await Task.Run(() => clienservicio.GetAllClienteAsync());
+        ProveedorObj = await Task.Run(() => proveedorServicio.GetAllProveedorAsync());
         isLoading = false;
     }
 
     async Task Eliminar(int Id,string DNI, string Nombre)
     {
-        ClienteObjEliminar = await Task.Run(() => clienservicio.GetClienteAsync(Id));
-        await  clienservicio.EliminarClienteAsync(ClienteObjEliminar);
+        ProveedorObjEliminar = await Task.Run(() => proveedorServicio.GetProveedorAsync(Id));
+        await  proveedorServicio.EliminarProveedorAsync(ProveedorObjEliminar);
         await Actualizar();
     } 
       async Task ShowInlineDialog(int Id,string DNI, string Nombre)
@@ -162,10 +162,10 @@ using Radzen;
             __builder2.AddMarkupContent(1, "\r\n            ");
             __builder2.OpenElement(2, "p");
             __builder2.AddAttribute(3, "class", "mb-4");
-            __builder2.AddContent(4, "Estas seguro de Elimiar al cliente  ");
+            __builder2.AddContent(4, "Estas seguro de Elimiar al proveedor  ");
             __builder2.OpenElement(5, "b");
 #nullable restore
-#line 89 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ClientePage.razor"
+#line 89 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ProveedorPage.razor"
 __builder2.AddContent(6, DNI);
 
 #line default
@@ -175,7 +175,7 @@ __builder2.AddContent(6, DNI);
             __builder2.AddMarkupContent(7, "<b>-</b>");
             __builder2.OpenElement(8, "b");
 #nullable restore
-#line 89 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ClientePage.razor"
+#line 89 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ProveedorPage.razor"
 __builder2.AddContent(9, Nombre);
 
 #line default
@@ -196,7 +196,7 @@ __builder2.AddContent(9, Nombre);
             __builder2.AddMarkupContent(13, "\r\n");
         }
 #nullable restore
-#line 97 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ClientePage.razor"
+#line 97 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ProveedorPage.razor"
        );
 
         if(result == null)
@@ -214,7 +214,7 @@ __builder2.AddContent(9, Nombre);
 #nullable disable
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private DialogService dialogService { get; set; }
-        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ClienteServicio clienservicio { get; set; }
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private ProveedorServicio proveedorServicio { get; set; }
     }
 }
 #pragma warning restore 1591

@@ -135,7 +135,6 @@ C:\Ruben\SBX_WEB\SBX_WEB\obj\Debug\netcoreapp3.1\SBX_WEB.csproj.CoreCompileInput
 C:\Ruben\SBX_WEB\SBX_WEB\obj\Debug\netcoreapp3.1\SBX_WEB.MvcApplicationPartsAssemblyInfo.cache
 C:\Ruben\SBX_WEB\SBX_WEB\obj\Debug\netcoreapp3.1\SBX_WEB.RazorComponent.input.cache
 C:\Ruben\SBX_WEB\SBX_WEB\obj\Debug\netcoreapp3.1\RazorDeclaration\App.razor.g.cs
-C:\Ruben\SBX_WEB\SBX_WEB\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\ClienteCrudPage.razor.g.cs
 C:\Ruben\SBX_WEB\SBX_WEB\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\ClientePage.razor.g.cs
 C:\Ruben\SBX_WEB\SBX_WEB\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Counter.razor.g.cs
 C:\Ruben\SBX_WEB\SBX_WEB\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Error.razor.g.cs
@@ -150,7 +149,6 @@ C:\Ruben\SBX_WEB\SBX_WEB\obj\Debug\netcoreapp3.1\SBX_WEB.TagHelpers.input.cache
 C:\Ruben\SBX_WEB\SBX_WEB\obj\Debug\netcoreapp3.1\SBX_WEB.TagHelpers.output.cache
 C:\Ruben\SBX_WEB\SBX_WEB\obj\Debug\netcoreapp3.1\SBX_WEB.RazorCoreGenerate.cache
 C:\Ruben\SBX_WEB\SBX_WEB\obj\Debug\netcoreapp3.1\Razor\App.razor.g.cs
-C:\Ruben\SBX_WEB\SBX_WEB\obj\Debug\netcoreapp3.1\Razor\Pages\ClienteCrudPage.razor.g.cs
 C:\Ruben\SBX_WEB\SBX_WEB\obj\Debug\netcoreapp3.1\Razor\Pages\ClientePage.razor.g.cs
 C:\Ruben\SBX_WEB\SBX_WEB\obj\Debug\netcoreapp3.1\Razor\Pages\Counter.razor.g.cs
 C:\Ruben\SBX_WEB\SBX_WEB\obj\Debug\netcoreapp3.1\Razor\Pages\Error.razor.g.cs

@@ -1,7 +1,7 @@
-﻿@page "/ClientePage"
+﻿@page "/ProveedorPage"
 @using SBX_WEB.Data
 @using Radzen;
-@inject ClienteServicio clienservicio
+@inject ProveedorServicio proveedorServicio
 @inject DialogService dialogService
 @inject NavigationManager NavigationManager
 
@@ -20,18 +20,18 @@
 
 <br />
 <RadzenDataGrid  @ref="ordersGrid" AllowFiltering="true" AllowPaging="true" PageSize="6" AllowSorting="true"
-                Data="@ClienteObj" TItem="Cliente" AllowColumnResize="true" IsLoading=@isLoading>
+                Data="@ProveedorObj" TItem="Proveedor" AllowColumnResize="true" IsLoading=@isLoading>
     <Columns>
-        <RadzenDataGridColumn TItem="Cliente" Property="DNI" Title="DNI" Width="80px" />
-        <RadzenDataGridColumn TItem="Cliente" Property="Nombre" Title="Nombre" Width="140px" />
-        <RadzenDataGridColumn TItem="Cliente" Property="Direccion" Title="Direccion" Width="140px" />
-        <RadzenDataGridColumn TItem="Cliente" Property="Celular" Title="Celular" Width="120px" />
-        <RadzenDataGridColumn Width="50px" TItem="Cliente" Property="Id" Title="">
+        <RadzenDataGridColumn TItem="Proveedor" Property="DNI" Title="DNI" Width="80px" />
+        <RadzenDataGridColumn TItem="Proveedor" Property="Nombre" Title="Nombre" Width="140px" />
+        <RadzenDataGridColumn TItem="Proveedor" Property="Direccion" Title="Direccion" Width="140px" />
+        <RadzenDataGridColumn TItem="Proveedor" Property="Celular" Title="Celular" Width="120px" />
+        <RadzenDataGridColumn Width="50px" TItem="Proveedor" Property="Id" Title="">
             <Template Context="data">
                 <RadzenButton Icon="create" ButtonStyle="ButtonStyle.Secondary" Class="m-1" Click=@(() => Editar(data.Id,data.DNI,data.Nombre)) />
             </Template>
         </RadzenDataGridColumn>
-         <RadzenDataGridColumn Width="50px" TItem="Cliente" Property="Id" Title="">
+         <RadzenDataGridColumn Width="50px" TItem="Proveedor" Property="Id" Title="">
             <Template Context="data">
                 <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Class="m-1"  Click=@(() => ShowInlineDialog(data.Id,data.DNI,data.Nombre))/>
             </Template>
@@ -40,19 +40,19 @@
 </RadzenDataGrid>
 
 @code {
-    RadzenDataGrid<Cliente> ordersGrid;
+    RadzenDataGrid<Proveedor> ordersGrid;
     bool isLoading = false;
     bool resultDialog;
     int IdGlobal = 0;
-    List<Data.Cliente> ClienteObj = new List<Data.Cliente>();
-    Data.Cliente ClienteObjEliminar = new Data.Cliente();
+    List<Data.Proveedor> ProveedorObj = new List<Data.Proveedor>();
+    Data.Proveedor ProveedorObjEliminar = new Data.Proveedor();
 
-    List<Data.Cliente> ClienteObjVerificar = new List<Data.Cliente>();
+    List<Data.Proveedor> ProveedorObjVerificar = new List<Data.Proveedor>();
     protected override async Task OnInitializedAsync()
     {
         isLoading = true;
-        ClienteObj = await Task.Run(() => clienservicio.GetAllClienteAsync());
-        ClienteObjVerificar = ClienteObj;
+        ProveedorObj = await Task.Run(() => proveedorServicio.GetAllProveedorAsync());
+        ProveedorObjVerificar = ProveedorObj;
         isLoading = false;
     }
     async Task Editar(int Id,string DNI, string Nombre)
@@ -60,7 +60,7 @@
         await dialogService.OpenAsync<ClienteEditarPage>($"{DNI} - {Nombre}",
                new Dictionary<string, object>() { { "Id", Id } },
                new DialogOptions() { Width = "60%",Height="85%" });
-        NavigationManager.NavigateTo("ClientePage",true);
+        NavigationManager.NavigateTo("ProveedorPage",true);
     } 
     async Task Registro()
     {
@@ -72,21 +72,21 @@
     async Task  Actualizar()
     {
         isLoading = true;
-        ClienteObj = await Task.Run(() => clienservicio.GetAllClienteAsync());
+        ProveedorObj = await Task.Run(() => proveedorServicio.GetAllProveedorAsync());
         isLoading = false;
     }
 
     async Task Eliminar(int Id,string DNI, string Nombre)
     {
-        ClienteObjEliminar = await Task.Run(() => clienservicio.GetClienteAsync(Id));
-        await  clienservicio.EliminarClienteAsync(ClienteObjEliminar);
+        ProveedorObjEliminar = await Task.Run(() => proveedorServicio.GetProveedorAsync(Id));
+        await  proveedorServicio.EliminarProveedorAsync(ProveedorObjEliminar);
         await Actualizar();
     } 
       async Task ShowInlineDialog(int Id,string DNI, string Nombre)
     {
      var result = await dialogService.OpenAsync("Confirmacion", ds =>
         @<div>
-            <p class="mb-4">Estas seguro de Elimiar al cliente  <b>@DNI</b><b>-</b><b>@Nombre</b> ?</p>
+            <p class="mb-4">Estas seguro de Elimiar al proveedor  <b>@DNI</b><b>-</b><b>@Nombre</b> ?</p>
             <div class="row">
                 <div class="col">
                     <RadzenButton Text="Ok" Click="() => ds.Close(true)" Class="mr-1" Style="width: 80px;" />

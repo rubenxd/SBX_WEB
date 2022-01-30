@@ -105,34 +105,118 @@ using Radzen;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 94 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ClienteEditarPage.razor"
+#line 102 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ClienteEditarPage.razor"
        
     [Parameter]
     public int Id {get; set;}
 
     Cliente cliente = new Cliente();
+    Cliente cliente2 = new Cliente();
+    Cliente cliente3 = new Cliente();
+    double DNI_ = 0;
+    double telefono_ = 0;
+    double celular_ = 0;
+    string dniValidar = "";
+    string pruebas = "0";
     bool v_ok = true;
 
     protected override async Task OnInitializedAsync()
     {
         cliente = await Task.Run(() => clienservicio.GetClienteAsync(Id));
-    }
+        dniValidar = cliente.DNI;
+        DNI_ = Convert.ToDouble(cliente.DNI);
+        telefono_ = Convert.ToDouble(cliente.telefono);
+        celular_ = Convert.ToDouble(cliente.Celular);
+    }   
+
     protected async void OnSubmit(Cliente arg)
     {
-        v_ok = await clienservicio.UpdateClienteAsync(arg);
-        if (v_ok)
+        //validar DNI
+         arg.DNI = DNI_.ToString();
+        if (dniValidar != arg.DNI )
         {
-             NavigationManager.NavigateTo("ClientePage");
-        }    
+            cliente2 = await Task.Run(() => clienservicio.GetClienteXDNIAsync(arg.DNI));
+            if (cliente2 == null)
+            {
+                arg.DNI = DNI_.ToString();
+                arg.telefono = telefono_.ToString();
+                arg.Celular = celular_.ToString();
+                v_ok = await clienservicio.UpdateClienteAsync(arg);
+                if (v_ok)
+                {
+                    NavigationManager.NavigateTo("ClientePage");
+                }
+            }
+            else
+            {
+                await ShowInlineDialog(arg.DNI);
+            }
+        }
+        else
+        {
+            arg.DNI = DNI_.ToString();
+            arg.telefono = telefono_.ToString();
+            arg.Celular = celular_.ToString();
+             v_ok = await clienservicio.UpdateClienteAsync(arg);
+                if (v_ok)
+                {
+                    NavigationManager.NavigateTo("ClientePage");
+                }
+        }
+
+    }
+       async Task ShowInlineDialog(string DNI)
+    {
+        var result = await dialogService.OpenAsync("Informacion", ds =>
+    
+
+#line default
+#line hidden
+#nullable disable
+        (__builder2) => {
+            __builder2.OpenElement(0, "div");
+            __builder2.AddMarkupContent(1, "\r\n        ");
+            __builder2.OpenElement(2, "p");
+            __builder2.AddAttribute(3, "class", "mb-4");
+            __builder2.AddContent(4, "DNI: ");
+            __builder2.OpenElement(5, "b");
+#nullable restore
+#line 165 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ClienteEditarPage.razor"
+__builder2.AddContent(6, DNI);
+
+#line default
+#line hidden
+#nullable disable
+            __builder2.CloseElement();
+            __builder2.AddContent(7, " ya existe ");
+            __builder2.CloseElement();
+            __builder2.AddMarkupContent(8, "\r\n        ");
+            __builder2.AddMarkupContent(9, "<div class=\"row\">\r\n            <div class=\"col\">\r\n                <RadzenButton Text=\"Ok\" Click=\"() => ds.Close(false)\" Class=\"mr-1\" Style=\"width: 80px;\"></RadzenButton>\r\n            </div>\r\n        </div>\r\n    ");
+            __builder2.CloseElement();
+            __builder2.AddMarkupContent(10, "\r\n");
+        }
+#nullable restore
+#line 172 "C:\Ruben\SBX_WEB\SBX_WEB\Pages\ClienteEditarPage.razor"
+    );
+
+        if (result == null)
+        {
+            result = false;
+        }
+        if (result)
+        {
+
+        }
     }
     void Cancel()
     {
-        NavigationManager.NavigateTo("ClientePage");
+        NavigationManager.NavigateTo("ClientePage",true);
     }
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private DialogService dialogService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private ClienteServicio clienservicio { get; set; }
     }

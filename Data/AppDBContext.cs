@@ -13,5 +13,6 @@ namespace SBX_WEB.Data
 
         }
         public DbSet<Cliente> clientes { get; set; }
+        public DbSet<Proveedor> proveedors { get; set; }
     }
 }
