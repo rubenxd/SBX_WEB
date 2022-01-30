@@ -124,7 +124,7 @@ using Radzen;
     }
     async Task Editar(int Id,string DNI, string Nombre)
     {        
-        await dialogService.OpenAsync<ClienteEditarPage>($"{DNI} - {Nombre}",
+        await dialogService.OpenAsync<ProveedorEditarPage>($"{DNI} - {Nombre}",
                new Dictionary<string, object>() { { "Id", Id } },
                new DialogOptions() { Width = "60%",Height="85%" });
         NavigationManager.NavigateTo("ProveedorPage",true);
