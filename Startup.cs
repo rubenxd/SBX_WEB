@@ -34,6 +34,11 @@ namespace SBX_WEB
             services.AddScoped<DialogService>();
             services.AddScoped<ClienteServicio>();
             services.AddScoped<ProveedorServicio>();
+            services.AddScoped<ProductoServicio>();
+            services.AddScoped<UnidadMedidaServicio>();
+            services.AddScoped<CategoriaServicio>();
+            services.AddScoped<MarcaServicio>();
+            services.AddScoped<EstadoServicio>();
             #region Connection String
             services.AddDbContext<AppDBContext>(item => item.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             #endregion

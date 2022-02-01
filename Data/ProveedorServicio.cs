@@ -37,6 +37,11 @@ namespace SBX_WEB.Data
             Proveedor proveedor = await _appDBContext.proveedores.FirstOrDefaultAsync(c => c.DNI.Equals(DNI));
             return proveedor;
         }
+        public async Task<Proveedor> GetProveedorXNombreAsync(string Nombre)
+        {
+            Proveedor proveedor = await _appDBContext.proveedores.FirstOrDefaultAsync(c => c.Nombre.Equals(Nombre));
+            return proveedor;
+        }
         #endregion
         #region Insert Proveedor
         public async Task<bool> InsertProveedorAsync(Proveedor proveedor)

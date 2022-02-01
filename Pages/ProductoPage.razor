@@ -1,0 +1,108 @@
+﻿@page "/ProductoPage"
+@using SBX_WEB.Data
+@using Radzen;
+@inject ProductoServicio productoservicio
+@inject DialogService dialogService
+@inject NavigationManager NavigationManager
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-1">
+                <RadzenButton Icon="add" ButtonStyle="ButtonStyle.Secondary" Click="@Registro" Text="" />
+            </div>
+            <div class="col-1">
+                <RadzenButton Icon="update" ButtonStyle="ButtonStyle.Secondary" Click="@Actualizar" Text="" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<RadzenDataGrid @ref="ordersGrid" AllowFiltering="true" AllowPaging="true" PageSize="6" AllowSorting="true"
+                Data="@ProductoObj" TItem="Producto" AllowColumnResize="true" IsLoading=@isLoading>
+    <Columns>
+        <RadzenDataGridColumn TItem="Producto" Property="Id" Title="ID" Width="80px" />
+        <RadzenDataGridColumn TItem="Producto" Property="Referencia" Title="Referencia" Width="140px" />
+        <RadzenDataGridColumn TItem="Producto" Property="Nombre" Title="Nombre" Width="140px" />
+        <RadzenDataGridColumn TItem="Producto" Property="Descripcion" Title="Descripcion" Width="120px" />
+        <RadzenDataGridColumn Width="50px" TItem="Producto" Property="Id" Title="">
+            <Template Context="data">
+                <RadzenButton Icon="create" ButtonStyle="ButtonStyle.Secondary" Class="m-1" Click=@(() => Editar(data.Id,data.Referencia,data.Nombre)) />
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn Width="50px" TItem="Producto" Property="Id" Title="">
+            <Template Context="data">
+                <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Class="m-1" Click=@(() => ShowInlineDialog(data.Id,data.Referencia,data.Nombre)) />
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+@code {
+    RadzenDataGrid<Producto> ordersGrid;
+    bool isLoading = false;
+    bool resultDialog;
+    int IdGlobal = 0;
+    List<Data.Producto> ProductoObj = new List<Data.Producto>();
+    Data.Producto ProductoObjEliminar = new Data.Producto();
+
+    List<Data.Producto> ProductoObjVerificar = new List<Data.Producto>();
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        ProductoObj = await Task.Run(() => productoservicio.GetAllProductoAsync());
+        ProductoObjVerificar = ProductoObj;
+        isLoading = false;
+    }
+    async Task Editar(int Id, string referencia, string Nombre)
+    {
+        await dialogService.OpenAsync<ProductoEditarPage>($"{Id} - {Nombre}",
+               new Dictionary<string, object>() { { "Id", Id } },
+               new DialogOptions() { Width = "60%", Height = "85%" });
+        NavigationManager.NavigateTo("ProductoPage", true);
+    }
+    async Task Registro()
+    {
+        await dialogService.OpenAsync<ProductoCrearPage>($"",
+               new Dictionary<string, object>() { },
+               new DialogOptions() { Width = "60%", Height = "85%" });
+        await Actualizar();
+    }
+    async Task Actualizar()
+    {
+        isLoading = true;
+        ProductoObj = await Task.Run(() => productoservicio.GetAllProductoAsync());
+        isLoading = false;
+    }
+
+    async Task Eliminar(int Id, string refencia, string Nombre)
+    {
+        ProductoObjEliminar = await Task.Run(() => productoservicio.GetProductoAsync(Id));
+        await productoservicio.EliminarProductoAsync(ProductoObjEliminar);
+        await Actualizar();
+    }
+    async Task ShowInlineDialog(int Id, string referencia, string Nombre)
+    {
+        var result = await dialogService.OpenAsync("Confirmacion", ds =>
+    @<div>
+        <p class="mb-4">Esta seguro de elimiar el producto  <b>@Id</b><b>-</b><b>@Nombre</b> ?</p>
+        <div class="row">
+            <div class="col">
+                <RadzenButton Text="Ok" Click="() => ds.Close(true)" Class="mr-1" Style="width: 80px;" />
+                <RadzenButton Text="Cancelar" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Secondary" Class="mr-1" />
+            </div>
+        </div>
+    </div>
+    );
+
+  if (result == null)
+  {
+      result = false;
+  }
+  if (result)
+  {
+      await Eliminar(Id, referencia, Nombre);
+  }
+}
+}

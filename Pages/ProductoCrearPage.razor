@@ -1,0 +1,440 @@
+﻿@page "/ProductoCrearPage"
+@using SBX_WEB.Data
+@using Radzen;
+@inject ProductoServicio productoservicio
+@inject UnidadMedidaServicio unidadmedidaServicio
+@inject EstadoServicio estadoServicio
+@inject CategoriaServicio categoriaServicio
+@inject MarcaServicio marcaServicio
+@inject ProveedorServicio proveedorServicio
+@inject NavigationManager NavigationManager
+@inject DialogService dialogService
+
+<RadzenTemplateForm TItem="Producto" Submit=@OnSubmit Data=@producto>
+    <RadzenFieldset Text="Nuevo producto">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Nombre" />
+                    </div>
+                    <div class="col">
+                        <RadzenTextBox style="display: block;" Name="Nombre" @bind-Value=@producto.Nombre Class="w-100" />
+                        <RadzenRequiredValidator Component="Nombre" Text="Nombre es requerido" Popup=true Style="position: absolute;" />
+                        <RadzenLengthValidator Component="Nombre" Max="50" Text="Maximo 50 caracteres" Popup=true />
+                    </div>
+                </div>
+                <div class="row  mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Referencia" />
+                    </div>
+                    <div class="col">
+                        <RadzenTextBox style="display: block;" Name="Referencia" @bind-Value=@producto.Referencia Class="w-100" />
+                        <RadzenLengthValidator Component="Referencia" Max="20" Text="Maximo 20 caracteres" Popup=true />
+                    </div>
+                </div>
+                <div class="row  mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Codigo Barras" />
+                    </div>
+                    <div class="col">
+                        <RadzenTextBox style="display: block;" Name="CodigoBarras" @bind-Value=@producto.CodigoBarras Class="w-100" />
+                        <RadzenLengthValidator Component="CodigoBarras" Max="20" Text="Maximo 20 caracteres" Popup=true />
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Descripcion" />
+                    </div>
+                    <div class="col">
+                        <RadzenTextBox style="display: block;" Name="Descripcion" @bind-Value=@producto.Descripcion Class="w-100" />
+                        <RadzenLengthValidator Component="Descripcion" Max="100" Text="Maximo 100 caracteres" Popup=true />
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="IVA" />
+                    </div>
+                    <div class="col">
+                        <RadzenNumeric style="display: block;" Name="IVA" @bind-Value=@producto.IVA Class="w-100" />
+                        <RadzenNumericRangeValidator Component="IVA" Min="0" Max="20" Text="Minimo 0 and maximo 20" Popup=true Style="position: absolute" />
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Unidad Medida" />
+                    </div>
+                    <div class="col">
+
+                        <RadzenDropDown AllowClear="true" TValue="string" @bind-Value=@IdUnidadMedida  Class="w-100"
+                                        Data=@(LstUnidadMedida.Select(c => c.Nombre).Distinct())
+                                        Change=@(args => OnChange(args, "DropDown")) />
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Medida" />
+                    </div>
+                    <div class="col">
+                        <RadzenNumeric style="display: block;" Name="Medida" @bind-Value=@producto.Medida Class="w-100" />
+                        <RadzenNumericRangeValidator Component="Medida" Min="0" Max="10000" Text="Minimo 0 and maximo 10000" Popup=true Style="position: absolute" />
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Estado" />
+                    </div>
+                    <div class="col">
+
+                        <RadzenDropDown AllowClear="true" TValue="string" @bind-Value=@IdEstado Class="w-100"
+                                        Data=@(LstEstado.Select(c => c.Nombre).Distinct())
+                                        Change=@(args => OnChange(args, "DropDown")) />
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Categoria" />
+                    </div>
+                    <div class="col">
+
+                        <RadzenDropDown AllowClear="true" TValue="string" @bind-Value=@IdCategoria Class="w-100"
+                                        Data=@(LstCategoria.Select(c => c.Nombre).Distinct())
+                                        Change=@(args => OnChange(args, "DropDown")) />
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Marca" />
+                    </div>
+                    <div class="col">
+
+                        <RadzenDropDown AllowClear="true" TValue="string" @bind-Value=@IdMarca Class="w-100"
+                                        Data=@(lstMarca.Select(c => c.Nombre).Distinct())
+                                        Change=@(args => OnChange(args, "DropDown")) />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">             
+                <div class="row mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Proveedor" />
+                    </div>
+                    <div class="col">
+
+                        <RadzenDropDown AllowClear="true" TValue="string" @bind-Value=@IdProveedor Class="w-100"
+                                        Data=@(lstProveedor.Select(c => c.Nombre).Distinct())
+                                        Change=@(args => OnChange(args, "DropDown")) />
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Modo venta" />
+                    </div>
+                    <div class="col">
+
+                        <RadzenDropDown AllowClear="true" TValue="string" @bind-Value=@IdModoVenta Class="w-100"
+                                        Data=@(lstModoVenta.Select(c => c.Nombre).Distinct())
+                                        Change=@(args => OnChange(args, "DropDown")) />
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Stock Min" />
+                    </div>
+                    <div class="col">
+                        <RadzenNumeric style="display: block;" Name="StockMinimo" @bind-Value=@producto.StockMinimo Class="w-100" />
+                        <RadzenNumericRangeValidator Component="StockMinimo" Min="0" Max="10000" Text="Minimo 0 " Popup=true Style="position: absolute" />
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Stock Max" />
+                    </div>
+                    <div class="col">
+                        <RadzenNumeric style="display: block;" Name="StockMaximo" @bind-Value=@producto.StockMaximo Class="w-100" />
+                        <RadzenNumericRangeValidator Component="StockMaximo" Min="0" Max="10000" Text="Minimo 0 " Popup=true Style="position: absolute" />
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Cantidad" />
+                    </div>
+                    <div class="col">
+                        <RadzenNumeric style="display: block;" Name="Cantidad" @bind-Value=@producto.Cantidad Class="w-100" />
+                        <RadzenNumericRangeValidator Component="Cantidad" Min="0" Max="10000" Text="Minimo 0" Popup=true Style="position: absolute" />
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Costo" />
+                    </div>
+                    <div class="col">
+                        <RadzenNumeric style="display: block;" Name="Costo" @bind-Value=@producto.Costo Class="w-100" />
+                        <RadzenNumericRangeValidator Component="Costo" Min="1" Max="1000000000" Text="Minimo 1" Popup=true Style="position: absolute" />
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Precio Venta" />
+                    </div>
+                    <div class="col">
+                        <RadzenNumeric style="display: block;" Name="PrecioVenta" @bind-Value=@producto.PrecioVenta Class="w-100" />
+                        <RadzenNumericRangeValidator Component="PrecioVenta" Min="1" Max="1000000000" Text="Minimo 1 " Popup=true Style="position: absolute" />
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Movimiento" />
+                    </div>
+                    <div class="col">
+
+                        <RadzenDropDown AllowClear="true" TValue="string" @bind-Value=@IdMovimiento Class="w-100"
+                                        Data=@(lstMovimiento.Select(c => c.Nombre).Distinct())
+                                        Change=@(args => OnChange(args, "DropDown")) />
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Nota" />
+                    </div>
+                    <div class="col">
+                        <RadzenTextBox style="display: block;" Name="Nota" @bind-Value=@producto.Nota Class="w-100" />
+                        <RadzenLengthValidator Component="Nota" Max="100" Text="Maximo 100 caracteres" Popup=true />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </RadzenFieldset>
+    <div class="row justify-content-center">
+        <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
+            <RadzenButton ButtonStyle="ButtonStyle.Secondary" ButtonType="ButtonType.Submit" Icon="save" Text="Guardar" style="display: inline-block; margin-left: 10px;" />
+            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="cancel" style="display: inline-block; margin-left: 10px;" Text="Cancelar" Click="@Cancel" />
+        </div>
+    </div>
+</RadzenTemplateForm>
+
+@code {
+    Producto producto = new Producto();
+    Producto producto2 = new Producto();
+    bool v_ok = true;
+    double DNI_ = 0;
+    double telefono_ = 0;
+    double celular_ = 0;
+    string IdUnidadMedida;
+    string IdEstado;
+    string IdCategoria;
+    string IdMarca;
+    string IdProveedor;
+    string IdModoVenta;
+    string IdMovimiento;
+    List<Producto> Lstproducto = new List<Producto>();
+    List<UnidadMedida> LstUnidadMedida = new List<UnidadMedida>();
+    UnidadMedida unidadMedida = new UnidadMedida();
+    List<Estado> LstEstado = new List<Estado>();
+    Estado estado = new Estado();
+    List<Categoria> LstCategoria = new List<Categoria>();
+    Categoria categoria = new Categoria();
+    List<Marca> lstMarca = new List<Marca>();
+    Marca Marca = new Marca();
+    List<Proveedor> lstProveedor = new List<Proveedor>();
+    Proveedor Proveedor = new Proveedor();
+    List<ModoVenta> lstModoVenta = new List<ModoVenta>();
+    ModoVenta lModoVenta = new ModoVenta();
+    List<Movimiento> lstMovimiento = new List<Movimiento>();
+    Movimiento lMovimiento = new Movimiento();
+    int v_validar = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        LstUnidadMedida = await Task.Run(() => unidadmedidaServicio.GetAllUnidadMedidaAsync());
+        LstEstado = await Task.Run(() => estadoServicio.GetAllEstadoAsync());
+        LstCategoria = await Task.Run(() => categoriaServicio.GetAllCategoriaAsync());
+        lstMarca = await Task.Run(() => marcaServicio.GetAllMarcaAsync());
+        lstProveedor = await Task.Run(() => proveedorServicio.GetAllProveedorAsync());
+        lModoVenta.Id = 1;
+        lModoVenta.Nombre = "Unidad";
+        lstModoVenta.Add(lModoVenta);
+        lMovimiento.Id = 1;
+        lMovimiento.Nombre = "Entrada";
+        lstMovimiento.Add(lMovimiento);
+    }
+    protected async void OnSubmit(Producto arg)
+    {
+        //validar Referencia
+        if (arg.Referencia == null && arg.CodigoBarras == null)
+        {
+            unidadMedida = await Task.Run(() => unidadmedidaServicio.GetUnidadMedidaXNombreAsync(IdUnidadMedida));
+            if (unidadMedida == null)
+            {
+                unidadMedida = await Task.Run(() => unidadmedidaServicio.GetUnidadMedidaXNombreAsync("UND"));
+            }
+            arg.IdunidadMedida = Convert.ToInt32(unidadMedida.Id);
+            arg.unidadMedida = unidadMedida;
+            estado = await Task.Run(() => estadoServicio.GetEstadoXNombreAsync(IdEstado));
+            if (estado == null)
+            {
+                estado = await Task.Run(() => estadoServicio.GetEstadoXNombreAsync("Activo"));
+            }
+            arg.estado = estado;
+            arg.Idestado = Convert.ToInt32(estado.Id);
+            categoria = await Task.Run(() => categoriaServicio.GetcategoriaXnombreAsync(IdCategoria));
+            if (categoria == null)
+            {
+                categoria = await Task.Run(() => categoriaServicio.GetcategoriaXnombreAsync("NA"));
+            }
+            arg.categoria = categoria;
+            arg.IdCategoria = Convert.ToInt32(categoria.Id);
+            Marca = await Task.Run(() => marcaServicio.GetMarcaXNombreAsync(IdMarca));
+            if (Marca == null)
+            {
+                Marca = await Task.Run(() => marcaServicio.GetMarcaXNombreAsync("NA"));
+            }
+            arg.marca = Marca;
+            arg.Idmarca = Convert.ToInt32(Marca.Id);
+            Proveedor = await Task.Run(() => proveedorServicio.GetProveedorXNombreAsync(IdProveedor));
+            if (Proveedor == null)
+            {
+                Proveedor = await Task.Run(() => proveedorServicio.GetProveedorXNombreAsync("NA"));
+            }
+            arg.proveedor = Proveedor;
+            arg.Idproveedor = Convert.ToInt32(Proveedor.Id);
+            if (IdModoVenta == null)
+            {
+                IdModoVenta = "Unidad";
+            }
+            arg.ModoVenta = IdModoVenta;
+            if (IdMovimiento == null)
+            {
+                IdMovimiento = "Entrada";
+            }
+            arg.Movimiento = IdMovimiento;
+            arg.FechaRegistro = DateTime.Now;
+            v_ok = await productoservicio.InsertProductoAsync(arg);
+            if (v_ok)
+            {
+                NavigationManager.NavigateTo("ProductoPage");
+            }
+        }
+        else
+        {
+            v_validar = 0;
+            producto2 = await Task.Run(() => productoservicio.GetProductoXreferenciaAsync(arg.Referencia));
+
+            if (producto2 == null)
+            {
+                v_validar = 0;
+            }
+            else
+            {
+                if (producto2.Referencia != null)
+                {
+                    v_validar++;
+                    await ShowInlineDialog(arg.Referencia, "Referencia");
+                }
+            }
+
+            if (v_validar == 0)
+            {
+                producto2 = await Task.Run(() => productoservicio.GetProductoXCodigoBarrasAsync(arg.CodigoBarras));
+                if (producto2 == null)
+                {
+                    v_validar = 0;
+                }
+                else
+                {
+                    if (producto2.CodigoBarras != null)
+                    {
+                        v_validar++;
+                        await ShowInlineDialog(arg.CodigoBarras, "Codigo barras");
+                    }
+                }
+            }
+
+            if (v_validar == 0)
+            {
+                unidadMedida = await Task.Run(() => unidadmedidaServicio.GetUnidadMedidaXNombreAsync(IdUnidadMedida));
+                if (unidadMedida == null)
+                {
+                    unidadMedida = await Task.Run(() => unidadmedidaServicio.GetUnidadMedidaXNombreAsync("UND"));
+                }
+                arg.IdunidadMedida = Convert.ToInt32(unidadMedida.Id);
+                arg.unidadMedida = unidadMedida;
+                estado = await Task.Run(() => estadoServicio.GetEstadoXNombreAsync(IdEstado));
+                if (estado == null)
+                {
+                    estado = await Task.Run(() => estadoServicio.GetEstadoXNombreAsync("Activo"));
+                }
+                arg.estado = estado;
+                arg.Idestado = Convert.ToInt32(estado.Id);
+                categoria = await Task.Run(() => categoriaServicio.GetcategoriaXnombreAsync(IdCategoria));
+                if (categoria == null)
+                {
+                    categoria = await Task.Run(() => categoriaServicio.GetcategoriaXnombreAsync("NA"));
+                }
+                arg.categoria = categoria;
+                arg.IdCategoria = Convert.ToInt32(categoria.Id);
+                Marca = await Task.Run(() => marcaServicio.GetMarcaXNombreAsync(IdMarca));
+                if (Marca == null)
+                {
+                    Marca = await Task.Run(() => marcaServicio.GetMarcaXNombreAsync("NA"));
+                }
+                arg.marca = Marca;
+                arg.Idmarca = Convert.ToInt32(Marca.Id);
+                Proveedor = await Task.Run(() => proveedorServicio.GetProveedorXNombreAsync(IdProveedor));
+                if (Proveedor == null)
+                {
+                    Proveedor = await Task.Run(() => proveedorServicio.GetProveedorXNombreAsync("NA"));
+                }
+                arg.proveedor = Proveedor;
+                arg.Idproveedor = Convert.ToInt32(Proveedor.Id);
+                if (IdModoVenta == null)
+                {
+                    IdModoVenta = "Unidad";
+                }
+                arg.ModoVenta = IdModoVenta;
+                if (IdMovimiento == null)
+                {
+                    IdMovimiento = "Entrada";
+                }
+                arg.Movimiento = IdMovimiento;
+                arg.FechaRegistro = DateTime.Now;
+                v_ok = await productoservicio.InsertProductoAsync(arg);
+                if (v_ok)
+                {
+                    NavigationManager.NavigateTo("ProductoPage");
+                }
+            }
+        }
+    }
+    async Task ShowInlineDialog(string Dato, string Mensaje)
+    {
+        var result = await dialogService.OpenAsync("Informacion", ds =>
+    @<div>
+        <p class="mb-4">@Mensaje: <b>@Dato</b> ya existe </p>
+        <div class="row">
+            <div class="col">
+                <RadzenButton Text="Ok" Click="() => ds.Close(false)" Class="mr-1" Style="width: 80px;" />
+            </div>
+        </div>
+    </div>
+    );
+
+        if (result == null)
+        {
+            result = false;
+        }
+        if (result)
+        {
+
+        }
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("ProductoPage");
+    }
+    void OnChange(object value, string name)
+    {
+        var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
+    }
+
+}

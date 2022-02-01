@@ -269,3 +269,9 @@ C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\SBX_WEB.pdb
 C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\SBX_WEB.genruntimeconfig.cache
 C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\ProveedorEditarPage.razor.g.cs
 C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\Razor\Pages\ProveedorEditarPage.razor.g.cs
+C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\ProductoPage.razor.g.cs
+C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\Razor\Pages\ProductoPage.razor.g.cs
+C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\ProductoCrearPage.razor.g.cs
+C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\Razor\Pages\ProductoCrearPage.razor.g.cs
+C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\ProductoEditarPage.razor.g.cs
+C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\Razor\Pages\ProductoEditarPage.razor.g.cs
