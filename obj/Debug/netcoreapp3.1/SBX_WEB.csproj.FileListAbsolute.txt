@@ -275,3 +275,4 @@ C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\ProductoCrearPag
 C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\Razor\Pages\ProductoCrearPage.razor.g.cs
 C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\ProductoEditarPage.razor.g.cs
 C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\Razor\Pages\ProductoEditarPage.razor.g.cs
+C:\Ruben\SBX_WEB\bin\Debug\netcoreapp3.1\Microsoft.Office.Interop.Excel.dll

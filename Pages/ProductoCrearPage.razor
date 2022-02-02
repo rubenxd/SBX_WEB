@@ -309,6 +309,13 @@
             }
             arg.Movimiento = IdMovimiento;
             arg.FechaRegistro = DateTime.Now;
+
+            Kardex kardex = new Kardex();
+            kardex.IdProducto = arg.Id;
+            kardex.Referencia = arg.Referencia;
+            kardex.Nombre = arg.Nombre;
+            kardex.Referencia = arg.Referencia;
+
             v_ok = await productoservicio.InsertProductoAsync(arg);
             if (v_ok)
             {

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "1NZju/JoJ0IJJUmaeyBzb4Gswb3lJ423CmvPGlLA5dcNt1nU/DtaalMooMAMflr1iLHo17iFozR5Hh9xH2/J+A==",
+  "dgSpecHash": "qDVJ7QHEaBAX1H4xCwvf26z4SGx63f8PtrcIbETSbxoqleUIoTJF6/4e/cOrkjmZUbDAyQb5n+XA/LNKwSz6AA==",
   "success": true,
   "projectFilePath": "C:\\Ruben\\SBX_WEB\\SBX_WEB.csproj",
   "expectedPackageFiles": [
@@ -37,6 +37,7 @@
     "C:\\Users\\Ruben\\.nuget\\packages\\microsoft.jsinterop\\3.1.0\\microsoft.jsinterop.3.1.0.nupkg.sha512",
     "C:\\Users\\Ruben\\.nuget\\packages\\microsoft.netcore.platforms\\2.0.0\\microsoft.netcore.platforms.2.0.0.nupkg.sha512",
     "C:\\Users\\Ruben\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
+    "C:\\Users\\Ruben\\.nuget\\packages\\microsoft.office.interop.excel\\15.0.4795.1000\\microsoft.office.interop.excel.15.0.4795.1000.nupkg.sha512",
     "C:\\Users\\Ruben\\.nuget\\packages\\microsoft.win32.registry\\4.5.0\\microsoft.win32.registry.4.5.0.nupkg.sha512",
     "C:\\Users\\Ruben\\.nuget\\packages\\radzen.blazor\\3.14.6\\radzen.blazor.3.14.6.nupkg.sha512",
     "C:\\Users\\Ruben\\.nuget\\packages\\runtime.native.system\\4.3.0\\runtime.native.system.4.3.0.nupkg.sha512",
@@ -103,5 +104,16 @@
     "C:\\Users\\Ruben\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
     "C:\\Users\\Ruben\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "El paquete \"Microsoft.Office.Interop.Excel 15.0.4795.1000\" se restauró con \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8\" en lugar de la plataforma de destino del proyecto \".NETCoreApp,Version=v3.1\". Puede que el paquete no sea totalmente compatible con el proyecto.",
+      "libraryId": "Microsoft.Office.Interop.Excel",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }

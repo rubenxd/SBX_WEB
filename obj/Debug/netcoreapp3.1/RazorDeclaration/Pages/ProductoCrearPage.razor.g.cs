@@ -202,6 +202,13 @@ using Radzen;
             }
             arg.Movimiento = IdMovimiento;
             arg.FechaRegistro = DateTime.Now;
+
+            Kardex kardex = new Kardex();
+            kardex.IdProducto = arg.Id;
+            kardex.Referencia = arg.Referencia;
+            kardex.Nombre = arg.Nombre;
+            kardex.Referencia = arg.Referencia;
+
             v_ok = await productoservicio.InsertProductoAsync(arg);
             if (v_ok)
             {
@@ -313,7 +320,7 @@ using Radzen;
             __builder2.OpenElement(2, "p");
             __builder2.AddAttribute(3, "class", "mb-4");
 #nullable restore
-#line 413 "C:\Ruben\SBX_WEB\Pages\ProductoCrearPage.razor"
+#line 420 "C:\Ruben\SBX_WEB\Pages\ProductoCrearPage.razor"
 __builder2.AddContent(4, Mensaje);
 
 #line default
@@ -322,7 +329,7 @@ __builder2.AddContent(4, Mensaje);
             __builder2.AddContent(5, ": ");
             __builder2.OpenElement(6, "b");
 #nullable restore
-#line 413 "C:\Ruben\SBX_WEB\Pages\ProductoCrearPage.razor"
+#line 420 "C:\Ruben\SBX_WEB\Pages\ProductoCrearPage.razor"
 __builder2.AddContent(7, Dato);
 
 #line default
@@ -337,7 +344,7 @@ __builder2.AddContent(7, Dato);
             __builder2.AddMarkupContent(11, "\r\n");
         }
 #nullable restore
-#line 420 "C:\Ruben\SBX_WEB\Pages\ProductoCrearPage.razor"
+#line 427 "C:\Ruben\SBX_WEB\Pages\ProductoCrearPage.razor"
     );
 
         if (result == null)

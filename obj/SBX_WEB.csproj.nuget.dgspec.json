@@ -54,6 +54,10 @@
               "target": "Package",
               "version": "[3.1.1, )"
             },
+            "Microsoft.Office.Interop.Excel": {
+              "target": "Package",
+              "version": "[15.0.4795.1000, )"
+            },
             "Radzen.Blazor": {
               "target": "Package",
               "version": "[3.14.6, )"

@@ -116,12 +116,19 @@ using Radzen;
     double telefono_ = 0;
     double celular_ = 0;
     string IdUnidadMedida;
+    int IdUnidadMedida2;
     string IdEstado;
+    int IdEstado2;
     string IdCategoria;
+    int IdCategoria2;
     string IdMarca;
+    int IdMarca2;
     string IdProveedor;
-    string IdModoVenta;
-    string IdMovimiento;
+    int IdProveedor2;
+    string IdModoVenta2;
+    string IdMovimiento2;
+    string ReferenciaTemp = "";
+    string CodigoBarrasTemp = "";
     List<Producto> Lstproducto = new List<Producto>();
     List<UnidadMedida> LstUnidadMedida = new List<UnidadMedida>();
     UnidadMedida unidadMedida = new UnidadMedida();
@@ -142,78 +149,116 @@ using Radzen;
     protected override async Task OnInitializedAsync()
     {
         producto = await Task.Run(() => productoservicio.GetProductoAsync(Id));
+        ReferenciaTemp = producto.Referencia;
+        CodigoBarrasTemp = producto.CodigoBarras;
+
         LstUnidadMedida = await Task.Run(() => unidadmedidaServicio.GetAllUnidadMedidaAsync());
         foreach (var item in LstUnidadMedida)
         {
-            if (item.Id == producto.IdunidadMedida)
+            if (producto.IdunidadMedida == item.Id)
             {
-                unidadMedida = item;
+                IdUnidadMedida2 = item.Id;
             }
         }
+
         LstEstado = await Task.Run(() => estadoServicio.GetAllEstadoAsync());
+        foreach (var item in LstEstado)
+        {
+            if (producto.Idestado == item.Id)
+            {
+                IdEstado2 = item.Id;
+            }
+        }
+
         LstCategoria = await Task.Run(() => categoriaServicio.GetAllCategoriaAsync());
+        foreach (var item in LstCategoria)
+        {
+            if (producto.IdCategoria == item.Id)
+            {
+                IdCategoria2 = item.Id;
+            }
+        }
+
         lstMarca = await Task.Run(() => marcaServicio.GetAllMarcaAsync());
+        foreach (var item in lstMarca)
+        {
+            if (producto.Idmarca == item.Id)
+            {
+                IdMarca2 = item.Id;
+            }
+        }
+
         lstProveedor = await Task.Run(() => proveedorServicio.GetAllProveedorAsync());
+        foreach (var item in lstProveedor)
+        {
+            if (producto.Idproveedor == item.Id)
+            {
+                IdProveedor2 = item.Id;
+            }
+        }
+
         lModoVenta.Id = 1;
         lModoVenta.Nombre = "Unidad";
         lstModoVenta.Add(lModoVenta);
+        IdModoVenta2 = producto.ModoVenta;
         lMovimiento.Id = 1;
         lMovimiento.Nombre = "Entrada";
         lstMovimiento.Add(lMovimiento);
+        IdMovimiento2 = producto.Movimiento;
 
     }
     protected async void OnSubmit(Producto arg)
     {
         //validar Referencia
-        if (arg.Referencia == null && arg.CodigoBarras == null)
+        if (arg.Referencia == ReferenciaTemp && arg.CodigoBarras == CodigoBarrasTemp)
         {
-            unidadMedida = await Task.Run(() => unidadmedidaServicio.GetUnidadMedidaXNombreAsync(IdUnidadMedida));
+            unidadMedida = await Task.Run(() => unidadmedidaServicio.GetUnidadMedidaAsync(IdUnidadMedida2));
             if (unidadMedida == null)
             {
                 unidadMedida = await Task.Run(() => unidadmedidaServicio.GetUnidadMedidaXNombreAsync("UND"));
             }
             arg.IdunidadMedida = Convert.ToInt32(unidadMedida.Id);
             arg.unidadMedida = unidadMedida;
-            estado = await Task.Run(() => estadoServicio.GetEstadoXNombreAsync(IdEstado));
+            estado = await Task.Run(() => estadoServicio.GetEstadoAsync(IdEstado2));
             if (estado == null)
             {
                 estado = await Task.Run(() => estadoServicio.GetEstadoXNombreAsync("Activo"));
             }
             arg.estado = estado;
             arg.Idestado = Convert.ToInt32(estado.Id);
-            categoria = await Task.Run(() => categoriaServicio.GetcategoriaXnombreAsync(IdCategoria));
+            categoria = await Task.Run(() => categoriaServicio.GetCategoriaAsync(IdCategoria2));
             if (categoria == null)
             {
                 categoria = await Task.Run(() => categoriaServicio.GetcategoriaXnombreAsync("NA"));
             }
             arg.categoria = categoria;
             arg.IdCategoria = Convert.ToInt32(categoria.Id);
-            Marca = await Task.Run(() => marcaServicio.GetMarcaXNombreAsync(IdMarca));
+            Marca = await Task.Run(() => marcaServicio.GetMarcaAsync(IdMarca2));
             if (Marca == null)
             {
                 Marca = await Task.Run(() => marcaServicio.GetMarcaXNombreAsync("NA"));
             }
             arg.marca = Marca;
             arg.Idmarca = Convert.ToInt32(Marca.Id);
-            Proveedor = await Task.Run(() => proveedorServicio.GetProveedorXNombreAsync(IdProveedor));
+            Proveedor = await Task.Run(() => proveedorServicio.GetProveedorAsync(IdProveedor2));
             if (Proveedor == null)
             {
                 Proveedor = await Task.Run(() => proveedorServicio.GetProveedorXNombreAsync("NA"));
             }
             arg.proveedor = Proveedor;
             arg.Idproveedor = Convert.ToInt32(Proveedor.Id);
-            if (IdModoVenta == null)
+            if (IdModoVenta2 == null)
             {
-                IdModoVenta = "Unidad";
+                IdModoVenta2 = "Unidad";
             }
-            arg.ModoVenta = IdModoVenta;
-            if (IdMovimiento == null)
+            arg.ModoVenta = IdModoVenta2;
+            if (IdMovimiento2 == null)
             {
-                IdMovimiento = "Entrada";
+                IdMovimiento2 = "Entrada";
             }
-            arg.Movimiento = IdMovimiento;
+            arg.Movimiento = IdMovimiento2;
             arg.FechaRegistro = DateTime.Now;
-            v_ok = await productoservicio.InsertProductoAsync(arg);
+            v_ok = await productoservicio.UpdateProductoAsync(arg);
             if (v_ok)
             {
                 NavigationManager.NavigateTo("ProductoPage");
@@ -222,85 +267,90 @@ using Radzen;
         else
         {
             v_validar = 0;
-            producto2 = await Task.Run(() => productoservicio.GetProductoXreferenciaAsync(arg.Referencia));
+            if (arg.Referencia != null && arg.Referencia != "" && arg.Referencia != ReferenciaTemp)
+            {
+                producto2 = await Task.Run(() => productoservicio.GetProductoXreferenciaAsync(arg.Referencia));
 
-            if (producto2 == null)
-            {
-                v_validar = 0;
-            }
-            else
-            {
-                if (producto2.Referencia != null)
-                {
-                    v_validar++;
-                    await ShowInlineDialog(arg.Referencia, "Referencia");
-                }
-            }
-
-            if (v_validar == 0)
-            {
-                producto2 = await Task.Run(() => productoservicio.GetProductoXCodigoBarrasAsync(arg.CodigoBarras));
                 if (producto2 == null)
                 {
                     v_validar = 0;
                 }
                 else
                 {
-                    if (producto2.CodigoBarras != null)
+                    if (producto2.Referencia != null)
                     {
                         v_validar++;
-                        await ShowInlineDialog(arg.CodigoBarras, "Codigo barras");
+                        await ShowInlineDialog(arg.Referencia, "Referencia");
+                    }
+                }
+            }
+            if (v_validar == 0)
+            {
+                if (arg.CodigoBarras != null && arg.CodigoBarras != "" && arg.CodigoBarras != CodigoBarrasTemp)
+                {
+                    producto2 = await Task.Run(() => productoservicio.GetProductoXCodigoBarrasAsync(arg.CodigoBarras));
+                    if (producto2 == null)
+                    {
+                        v_validar = 0;
+                    }
+                    else
+                    {
+                        if (producto2.CodigoBarras != null)
+                        {
+                            v_validar++;
+                            await ShowInlineDialog(arg.CodigoBarras, "Codigo barras");
+                        }
                     }
                 }
             }
 
             if (v_validar == 0)
             {
-                unidadMedida = await Task.Run(() => unidadmedidaServicio.GetUnidadMedidaXNombreAsync(IdUnidadMedida));
+                unidadMedida = await Task.Run(() => unidadmedidaServicio.GetUnidadMedidaAsync(IdUnidadMedida2));
                 if (unidadMedida == null)
                 {
                     unidadMedida = await Task.Run(() => unidadmedidaServicio.GetUnidadMedidaXNombreAsync("UND"));
                 }
                 arg.IdunidadMedida = Convert.ToInt32(unidadMedida.Id);
                 arg.unidadMedida = unidadMedida;
-                estado = await Task.Run(() => estadoServicio.GetEstadoXNombreAsync(IdEstado));
+                estado = await Task.Run(() => estadoServicio.GetEstadoAsync(IdEstado2));
                 if (estado == null)
                 {
                     estado = await Task.Run(() => estadoServicio.GetEstadoXNombreAsync("Activo"));
                 }
                 arg.estado = estado;
                 arg.Idestado = Convert.ToInt32(estado.Id);
-                categoria = await Task.Run(() => categoriaServicio.GetcategoriaXnombreAsync(IdCategoria));
+                categoria = await Task.Run(() => categoriaServicio.GetCategoriaAsync(IdCategoria2));
                 if (categoria == null)
                 {
                     categoria = await Task.Run(() => categoriaServicio.GetcategoriaXnombreAsync("NA"));
                 }
                 arg.categoria = categoria;
                 arg.IdCategoria = Convert.ToInt32(categoria.Id);
-                Marca = await Task.Run(() => marcaServicio.GetMarcaXNombreAsync(IdMarca));
+                Marca = await Task.Run(() => marcaServicio.GetMarcaAsync(IdMarca2));
                 if (Marca == null)
                 {
                     Marca = await Task.Run(() => marcaServicio.GetMarcaXNombreAsync("NA"));
                 }
                 arg.marca = Marca;
                 arg.Idmarca = Convert.ToInt32(Marca.Id);
-                Proveedor = await Task.Run(() => proveedorServicio.GetProveedorXNombreAsync(IdProveedor));
+                Proveedor = await Task.Run(() => proveedorServicio.GetProveedorAsync(IdProveedor2));
                 if (Proveedor == null)
                 {
                     Proveedor = await Task.Run(() => proveedorServicio.GetProveedorXNombreAsync("NA"));
                 }
                 arg.proveedor = Proveedor;
                 arg.Idproveedor = Convert.ToInt32(Proveedor.Id);
-                if (IdModoVenta == null)
+                if (IdModoVenta2 == null)
                 {
-                    IdModoVenta = "Unidad";
+                    IdModoVenta2 = "Unidad";
                 }
-                arg.ModoVenta = IdModoVenta;
-                if (IdMovimiento == null)
+                arg.ModoVenta = IdModoVenta2;
+                if (IdMovimiento2 == null)
                 {
-                    IdMovimiento = "Entrada";
+                    IdMovimiento2 = "Entrada";
                 }
-                arg.Movimiento = IdMovimiento;
+                arg.Movimiento = IdMovimiento2;
                 arg.FechaRegistro = DateTime.Now;
                 v_ok = await productoservicio.UpdateProductoAsync(arg);
                 if (v_ok)
@@ -324,7 +374,7 @@ using Radzen;
             __builder2.OpenElement(2, "p");
             __builder2.AddAttribute(3, "class", "mb-4");
 #nullable restore
-#line 424 "C:\Ruben\SBX_WEB\Pages\ProductoEditarPage.razor"
+#line 474 "C:\Ruben\SBX_WEB\Pages\ProductoEditarPage.razor"
 __builder2.AddContent(4, Mensaje);
 
 #line default
@@ -333,7 +383,7 @@ __builder2.AddContent(4, Mensaje);
             __builder2.AddContent(5, ": ");
             __builder2.OpenElement(6, "b");
 #nullable restore
-#line 424 "C:\Ruben\SBX_WEB\Pages\ProductoEditarPage.razor"
+#line 474 "C:\Ruben\SBX_WEB\Pages\ProductoEditarPage.razor"
 __builder2.AddContent(7, Dato);
 
 #line default
@@ -348,7 +398,7 @@ __builder2.AddContent(7, Dato);
             __builder2.AddMarkupContent(11, "\r\n");
         }
 #nullable restore
-#line 431 "C:\Ruben\SBX_WEB\Pages\ProductoEditarPage.razor"
+#line 481 "C:\Ruben\SBX_WEB\Pages\ProductoEditarPage.razor"
     );
 
         if (result == null)
@@ -368,7 +418,10 @@ __builder2.AddContent(7, Dato);
     {
         var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
     }
-
+    void ChangeBound(object value, string name)
+    {
+       
+    }
 
 #line default
 #line hidden
