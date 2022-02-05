@@ -80,5 +80,10 @@ namespace SBX_WEB.Data
             return true;
         }
         #endregion
+        public async Task<Producto> GetProductoReferenciaAsync(string referencia)
+        {
+            Producto Productos = await _appDBContext.productos.FirstOrDefaultAsync(c => c.Referencia.Equals(referencia));
+            return Productos;
+        }
     }
 }

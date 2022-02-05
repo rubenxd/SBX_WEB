@@ -75,5 +75,10 @@ namespace SBX_WEB.Data
             return true;
         }
         #endregion
+        public async Task<Cliente> GetClienteXNombreAsync(string nombre)
+        {
+            Cliente cliente = await _appDBContext.clientes.FirstOrDefaultAsync(c => c.Nombre.Equals(nombre));
+            return cliente;
+        }
     }
 }

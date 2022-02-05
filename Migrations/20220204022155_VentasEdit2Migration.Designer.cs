@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SBX_WEB.Data;
 
 namespace SBX_WEB.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220204022155_VentasEdit2Migration")]
+    partial class VentasEdit2Migration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -244,8 +246,8 @@ namespace SBX_WEB.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Cantidad")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Cantidad")
+                        .HasColumnType("real");
 
                     b.Property<string>("CodigoBarras")
                         .HasColumnType("nvarchar(max)");
@@ -497,37 +499,34 @@ namespace SBX_WEB.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("Cambio")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Cambio")
+                        .HasColumnType("real");
 
-                    b.Property<decimal>("Cantidad")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
 
                     b.Property<int>("ClienteId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ConsecutivoDocumento")
-                        .HasColumnType("int");
+                    b.Property<string>("ConsecutivoDocumento")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Costo")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Costo")
+                        .HasColumnType("real");
 
-                    b.Property<decimal>("Descuento")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Descuento")
+                        .HasColumnType("real");
 
-                    b.Property<decimal>("Efectivo")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Efectivo")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("IVA")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("IVA")
+                        .HasColumnType("real");
 
                     b.Property<string>("ModoVenta")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Movimiento")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NombreDocumento")
@@ -536,14 +535,14 @@ namespace SBX_WEB.Migrations
                     b.Property<string>("Nota")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PrecioVenta")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("PrecioVenta")
+                        .HasColumnType("real");
 
                     b.Property<int>("ProductoId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Total")
+                        .HasColumnType("real");
 
                     b.Property<string>("UM")
                         .HasColumnType("nvarchar(max)");

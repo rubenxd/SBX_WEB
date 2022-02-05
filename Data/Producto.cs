@@ -29,7 +29,8 @@ namespace SBX_WEB.Data
         public string ModoVenta { get; set; }
         public int StockMinimo { get; set; }
         public int StockMaximo { get; set; }
-        public float Cantidad { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Cantidad { get; set; }
         [Column(TypeName = "decimal(18,2)")]
         public decimal Costo { get; set; }
         [Column(TypeName = "decimal(18,2)")]
@@ -47,5 +48,10 @@ namespace SBX_WEB.Data
         public string Movimiento { get; set; }
         public DateTime FechaVencimiento { get; set; }
         public string Nota { get; set; }
+
+        //campos para procesos
+        public float DescuentoP { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Total { get; set; }
     }
 }

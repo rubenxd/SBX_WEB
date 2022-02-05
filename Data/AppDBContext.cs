@@ -21,5 +21,6 @@ namespace SBX_WEB.Data
         public DbSet<Usuario> usuarios { get; set; }
         public DbSet<Producto> productos { get; set; }
         public DbSet<Kardex> kardexs { get; set; }
+        public DbSet<Venta> ventas { get; set; }
     }
 }

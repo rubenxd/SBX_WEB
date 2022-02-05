@@ -276,3 +276,10 @@ C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\Razor\Pages\ProductoCrearPage.razor.g.c
 C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\ProductoEditarPage.razor.g.cs
 C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\Razor\Pages\ProductoEditarPage.razor.g.cs
 C:\Ruben\SBX_WEB\bin\Debug\netcoreapp3.1\Microsoft.Office.Interop.Excel.dll
+C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\VentaCrearPage.razor.g.cs
+C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\Razor\Pages\VentaCrearPage.razor.g.cs
+C:\Ruben\SBX_WEB\bin\Debug\netcoreapp3.1\Castle.Core.dll
+C:\Ruben\SBX_WEB\bin\Debug\netcoreapp3.1\Castle.Windsor.dll
+C:\Ruben\SBX_WEB\bin\Debug\netcoreapp3.1\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Ruben\SBX_WEB\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyModel.dll
+C:\Ruben\SBX_WEB\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll

@@ -39,6 +39,7 @@ namespace SBX_WEB
             services.AddScoped<CategoriaServicio>();
             services.AddScoped<MarcaServicio>();
             services.AddScoped<EstadoServicio>();
+            services.AddScoped<VentaServicio>();
             #region Connection String
             services.AddDbContext<AppDBContext>(item => item.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             #endregion

@@ -1,0 +1,687 @@
+﻿@page "/VentaCrearPage"
+@using SBX_WEB.Data
+@using Radzen;
+@inject ProductoServicio Productoservicio
+@inject NavigationManager NavigationManager
+@inject NavigationManager uriHelper
+@inject ClienteServicio clienservicio
+@inject VentaServicio ventaServicio
+@inject DialogService DialogService
+@inject IJSRuntime JSRuntime;
+
+<RadzenFieldset Text="Producto">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-11">
+                    <RadzenTextBox @bind-Value=@InputValue @onkeyup="@Enter" Style="float:right; width:100%;" Placeholder="Buscar..."></RadzenTextBox>
+                </div>
+                <div class="col-md-1">
+                    <RadzenButton Icon="search" ButtonStyle="ButtonStyle.Secondary" Text="" Click="AgregarProducto" Style="float:left;" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6">
+
+                </div>
+                <div class="col-md-1">
+                    <RadzenButton Icon="save" Disabled="true" ButtonStyle="ButtonStyle.Secondary" Text="" Click="CreateProducto" Style="float:left;" />
+                </div>
+                <div class="col-md-1">
+                    <RadzenButton Icon="update" ButtonStyle="ButtonStyle.Secondary" Text="" Click="Actualizar" Style="float:left;" />
+                </div>
+                <div class="col-md-1">
+                    @*<RadzenButton Icon="person_add" ButtonStyle="ButtonStyle.Secondary" Text="" Click="AgregarProducto" Style="float:left;" />*@
+                </div>
+
+            </div>
+        </div>
+    </div>
+</RadzenFieldset>
+<RadzenFieldset Text="--">
+    <RadzenDataGrid @ref="grid" AllowPaging="true" Style="height:300px" AllowSorting="true"
+                    Data="@lstProd" TItem="Producto" AllowColumnResize="true" IsLoading=@isLoading EditMode="DataGridEditMode.Multiple">
+        <Columns>
+            <RadzenDataGridColumn TItem="Producto" Property="Id" Title="Id" Width="40px" Filterable="false" Sortable="false" />
+            <RadzenDataGridColumn TItem="Producto" Property="Referencia" Title="Referencia" Width="120px" Filterable="false" Sortable="false" />
+            <RadzenDataGridColumn TItem="Producto" Property="Nombre" Title="Nombre" Width="160px" Filterable="false" Sortable="false" />
+            <RadzenDataGridColumn TItem="Producto" Property="PrecioVenta" Title="PrecioVenta" Width="80px" Filterable="false" Sortable="false">
+                <EditTemplate Context="order">
+                    <RadzenNumeric @bind-Value="order.PrecioVenta" Name="ShipName" />
+                </EditTemplate>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Producto" Title="Cantidad" Property="Cantidad" Context="1" Width="60px" Filterable="false" Sortable="false">
+                <EditTemplate Context="order">
+                    <RadzenNumeric @bind-Value="order.Cantidad" Name="Cantida" />
+                </EditTemplate>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Producto" Title="Descuento" Property="DescuentoP" Context="1" Width="60px" Filterable="false" Sortable="false">
+                <EditTemplate Context="order">
+                    <RadzenNumeric @bind-Value="order.DescuentoP" Name="DescuentoP" />
+                </EditTemplate>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Producto" Property="Total" Title="Total" Width="80px" Filterable="false" Sortable="false" />
+            <RadzenDataGridColumn TItem="Producto" Context="sampleBlazorModelsSampleOrder" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="90px">
+                <Template Context="order">
+                    <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Class="m-1" Click="@(args => EditRow(order))" @onclick:stopPropagation="true">
+                    </RadzenButton>
+                </Template>
+                <EditTemplate Context="order">
+                    <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Primary" Class="m-1" Click="@((args) => SaveRow(order))">
+                    </RadzenButton>
+                    <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1" Click="@((args) => CancelEdit(order))">
+                    </RadzenButton>
+                </EditTemplate>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Producto" Context="order" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="40px">
+                <Template Context="order">
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Small" Class="m-1" Click="@(args => DeleteRow(order))" @onclick:stopPropagation="true">
+                    </RadzenButton>
+                </Template>
+                <EditTemplate Context="order">
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Small" Class="m-1" Click="@(args => DeleteRow(order))">
+                    </RadzenButton>
+                </EditTemplate>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+</RadzenFieldset>
+<RadzenFieldset Text="Informacion de pago">
+    <div class="row mb-3">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Text="Cliente: " Style="float:right;" />
+                </div>
+                <div class="col-md-8">
+                    <RadzenDropDownDataGrid TValue="string" @bind-Value="@ClienteDNI" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowFiltering="true" AllowClear="true"
+                                            Data=@(ClienteObj) AllowColumnResize="true"
+                                            TextProperty="Nombre" ValueProperty="DNI" AllowFilteringByAllStringColumns="true">
+                        <Columns>
+                            <RadzenDropDownDataGridColumn Property="DNI" Title="DNI" Width="100px" />
+                            <RadzenDropDownDataGridColumn Property="Nombre" Title="Nombre" Width="200px" />
+                        </Columns>
+                    </RadzenDropDownDataGrid>
+                </div>
+                <div class="col-md-1">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Text="Total: " Style="float:right;" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenLabel Text="@TotalFacturar.ToString("N")" Style="float:left;" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Text="Efectivo: " Style="float:right;" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenNumeric Name="Efectivo" TValue="decimal" ShowUpDown="false" @bind-Value="@Efectivo" Change="@OnChange" @onkeyup="@Keypress" Style="float:left;" />
+                    <RadzenLabel Text=@mensaje Style="color:red;" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row mb-1">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Text="Cambio: " Style="float:right;" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenLabel Text="@Cambio.ToString("N")" Style="float:left;" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</RadzenFieldset>
+
+@code{
+    public string InputValue { get; set; }
+    RadzenDataGrid<Producto> grid;
+    bool isLoading = false;
+    List<Data.Producto> lstProd = new List<Data.Producto>();
+    public string ClienteDNI { get; set; }
+    List<Data.Cliente> ClienteObj = new List<Data.Cliente>();
+    public decimal TotalFacturar { get; set; }
+    public decimal Efectivo { get; set; }
+    //public decimal Cambio { get; set; }
+    Data.Producto LstObjBuscados = new Data.Producto();
+    string IdTemp = "";
+    public decimal total { get; set; } = 0;
+    Producto orderToInsert;
+    public int ClienteId { get; set; }
+    string mensaje = "";
+    public decimal Cambio { get; set; }
+    public decimal ValidaGuardar { get; set; }
+    string datovlidar = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        ClienteObj = await Task.Run(() => clienservicio.GetAllClienteAsync());
+    }
+    async Task AgregarProducto()
+    {
+        isLoading = true;
+        int verificacionIgual = 0;
+        if (this.InputValue != "" && this.InputValue != null)
+        {
+            verificacionIgual = 0;
+            if (InputValue.All(char.IsDigit))
+            {
+                LstObjBuscados = await Task.Run(() => Productoservicio.GetProductoAsync(Convert.ToInt32(this.InputValue)));
+                if (LstObjBuscados != null)
+                {
+                    if (IdTemp == "")
+                    {
+                        LstObjBuscados.DescuentoP = 0;
+                        LstObjBuscados.Cantidad = 1;
+                        LstObjBuscados.Total = LstObjBuscados.PrecioVenta;
+                        lstProd.Add(LstObjBuscados);
+                    }
+                    else
+                    {
+                        foreach (var item in lstProd)
+                        {
+                            if (item.Id == Convert.ToInt32(this.InputValue))
+                            {
+                                verificacionIgual++;
+                            }
+                        }
+                        if (verificacionIgual > 0)
+                        {
+                            LstObjBuscados.Cantidad++;
+                            total = LstObjBuscados.Cantidad * LstObjBuscados.PrecioVenta;
+                            LstObjBuscados.Total = total;
+                        }
+                        else
+                        {
+                            LstObjBuscados.DescuentoP = 0;
+                            LstObjBuscados.Cantidad = 1;
+                            LstObjBuscados.Total = LstObjBuscados.PrecioVenta;
+                            lstProd.Add(LstObjBuscados);
+                        }
+                    }
+                    IdTemp = InputValue;
+                }
+                else
+                {
+                    LstObjBuscados = await Task.Run(() => Productoservicio.GetProductoReferenciaAsync(this.InputValue));
+                    if (LstObjBuscados != null)
+                    {
+                        if (IdTemp == "")
+                        {
+                            LstObjBuscados.DescuentoP = 0;
+                            LstObjBuscados.Cantidad = 1;
+                            LstObjBuscados.Total = LstObjBuscados.PrecioVenta;
+                            lstProd.Add(LstObjBuscados);
+                        }
+                        else
+                        {
+                            foreach (var item in lstProd)
+                            {
+                                if (item.Referencia == this.InputValue)
+                                {
+                                    verificacionIgual++;
+                                }
+                            }
+                            if (verificacionIgual > 0)
+                            {
+                                LstObjBuscados.Cantidad++;
+                                total = LstObjBuscados.Cantidad * LstObjBuscados.PrecioVenta;
+                                LstObjBuscados.Total = total;
+                            }
+                            else
+                            {
+                                LstObjBuscados.DescuentoP = 0;
+                                LstObjBuscados.Cantidad = 1;
+                                LstObjBuscados.Total = LstObjBuscados.PrecioVenta;
+                                lstProd.Add(LstObjBuscados);
+                            }
+                        }
+                    }
+                    IdTemp = InputValue;
+                }
+            }
+            else
+            {
+                LstObjBuscados = await Task.Run(() => Productoservicio.GetProductoReferenciaAsync(this.InputValue));
+                if (LstObjBuscados != null)
+                {
+                    if (IdTemp == "")
+                    {
+                        LstObjBuscados.DescuentoP = 0;
+                        LstObjBuscados.Cantidad = 1;
+                        LstObjBuscados.Total = LstObjBuscados.PrecioVenta;
+                        lstProd.Add(LstObjBuscados);
+                    }
+                    else
+                    {
+                        foreach (var item in lstProd)
+                        {
+                            if (item.Referencia == this.InputValue)
+                            {
+                                verificacionIgual++;
+                            }
+                        }
+                        if (verificacionIgual > 0)
+                        {
+                            LstObjBuscados.Cantidad++;
+                            total = LstObjBuscados.Cantidad * LstObjBuscados.PrecioVenta;
+                            LstObjBuscados.Total = total;
+                        }
+                        else
+                        {
+                            LstObjBuscados.DescuentoP = 0;
+                            LstObjBuscados.Cantidad = 1;
+                            LstObjBuscados.Total = LstObjBuscados.PrecioVenta;
+                            lstProd.Add(LstObjBuscados);
+                        }
+                    }
+                }
+                IdTemp = InputValue;
+            }
+        }
+        if (LstObjBuscados != null)
+        {
+            InputValue = "";
+        }
+        await grid.Reload();
+        TotalFacturar = 0;
+        foreach (var item in lstProd)
+        {
+            TotalFacturar += item.Total;
+        }
+        calculo();
+        isLoading = false;
+    }
+    async Task Enter(KeyboardEventArgs e)
+    {
+        isLoading = true;
+        int verificacionIgual = 0;
+        if (this.InputValue != "" && this.InputValue != null)
+        {
+            if (e.Key == "Enter")
+            {
+                verificacionIgual = 0;
+                if (InputValue.All(char.IsDigit))
+                {
+                    LstObjBuscados = await Task.Run(() => Productoservicio.GetProductoAsync(Convert.ToInt32(this.InputValue)));
+                    if (LstObjBuscados != null)
+                    {
+                        if (IdTemp == "")
+                        {
+                            LstObjBuscados.Cantidad = 1;
+                            LstObjBuscados.Total = LstObjBuscados.PrecioVenta;
+                            lstProd.Add(LstObjBuscados);
+                        }
+                        else
+                        {
+                            foreach (var item in lstProd)
+                            {
+                                if (item.Id == Convert.ToInt32(this.InputValue))
+                                {
+                                    verificacionIgual++;
+                                }
+                            }
+                            if (verificacionIgual > 0)
+                            {
+                                LstObjBuscados.Cantidad++;
+                                total = LstObjBuscados.Cantidad * LstObjBuscados.PrecioVenta;
+                                LstObjBuscados.Total = total;
+                            }
+                            else
+                            {
+                                LstObjBuscados.Cantidad = 1;
+                                LstObjBuscados.Total = LstObjBuscados.PrecioVenta;
+                                lstProd.Add(LstObjBuscados);
+                            }
+                        }
+                        IdTemp = InputValue;
+                    }
+                    else
+                    {
+                        LstObjBuscados = await Task.Run(() => Productoservicio.GetProductoReferenciaAsync(this.InputValue));
+                        if (LstObjBuscados != null)
+                        {
+                            if (IdTemp == "")
+                            {
+                                LstObjBuscados.Cantidad = 1;
+                                LstObjBuscados.Total = LstObjBuscados.PrecioVenta;
+                                lstProd.Add(LstObjBuscados);
+                            }
+                            else
+                            {
+                                foreach (var item in lstProd)
+                                {
+                                    if (item.Referencia == this.InputValue)
+                                    {
+                                        verificacionIgual++;
+                                    }
+                                }
+                                if (verificacionIgual > 0)
+                                {
+                                    LstObjBuscados.Cantidad++;
+                                    total = LstObjBuscados.Cantidad * LstObjBuscados.PrecioVenta;
+                                    LstObjBuscados.Total = total;
+                                }
+                                else
+                                {
+                                    LstObjBuscados.Cantidad = 1;
+                                    LstObjBuscados.Total = LstObjBuscados.PrecioVenta;
+                                    lstProd.Add(LstObjBuscados);
+                                }
+                            }
+                        }
+                        IdTemp = InputValue;
+                    }
+                }
+                else
+                {
+                    LstObjBuscados = await Task.Run(() => Productoservicio.GetProductoReferenciaAsync(this.InputValue));
+                    if (LstObjBuscados != null)
+                    {
+                        if (IdTemp == "")
+                        {
+                            LstObjBuscados.Cantidad = 1;
+                            LstObjBuscados.Total = LstObjBuscados.PrecioVenta;
+                            lstProd.Add(LstObjBuscados);
+                        }
+                        else
+                        {
+                            foreach (var item in lstProd)
+                            {
+                                if (item.Referencia == this.InputValue)
+                                {
+                                    verificacionIgual++;
+                                }
+                            }
+                            if (verificacionIgual > 0)
+                            {
+                                LstObjBuscados.Cantidad++;
+                                total = LstObjBuscados.Cantidad * LstObjBuscados.PrecioVenta;
+                                LstObjBuscados.Total = total;
+                            }
+                            else
+                            {
+                                LstObjBuscados.Cantidad = 1;
+                                LstObjBuscados.Total = LstObjBuscados.PrecioVenta;
+                                lstProd.Add(LstObjBuscados);
+                            }
+                        }
+                    }
+                    IdTemp = InputValue;
+                }
+            }
+        }
+        if (InputValue != null)
+        {
+            if (LstObjBuscados != null)
+            {
+                InputValue = "";
+            }
+        }
+
+        await grid.Reload();
+        TotalFacturar = 0;
+        foreach (var item in lstProd)
+        {
+            TotalFacturar += item.Total;
+        }
+        calculo();
+        isLoading = false;
+    }
+    protected async void CreateProducto()
+    {
+        if (lstProd.Count > 0)
+        {         
+            if (Efectivo >= TotalFacturar)
+            {
+                mensaje = "";
+                List<Venta> lstProducVenta = new List<Venta>();
+                Venta ProducVentaven = new Venta();
+                foreach (var item in lstProd)
+                {
+                    ProducVentaven = new Venta();
+                    ProducVentaven.Cantidad = item.Cantidad;
+                    ProducVentaven.Costo = item.Costo;
+                    ProducVentaven.PrecioVenta = item.PrecioVenta;
+                    ProducVentaven.Total = item.Total;
+                    ProducVentaven.Efectivo = Efectivo;
+                    ProducVentaven.ModoVenta = item.ModoVenta;
+                    if (item.ModoVenta == "Unidad")
+                    {
+                        ProducVentaven.UM = "UND";
+                    }
+                    else if (item.ModoVenta == "Pesaje")
+                    {
+                        ProducVentaven.UM = "Bulto";
+                    }
+                    else
+                    {
+                        ProducVentaven.UM = "Caja";
+                    }
+                    ProducVentaven.Movimiento = "SALIDA";
+                    ProducVentaven.NombreDocumento = "F";
+                    List<Venta> ProductovenObjDefecto = new List<Venta>();
+                    ProductovenObjDefecto = await Task.Run(() => ventaServicio.GetAllVentaAsync());
+                    int numCount = 0;
+                    if (ProductovenObjDefecto.Count > 0)
+                    {
+                        numCount =
+                     (from num in ProductovenObjDefecto
+                      select num.ConsecutivoDocumento).Max();
+
+                        numCount++;
+                    }
+                    else
+                    {
+                        numCount = 1;
+                    }
+
+                    ProducVentaven.ConsecutivoDocumento = numCount;
+                    //ProducVentaven.FechaRegistro = DateTime.Now;
+                    ProducVentaven.Descuento = 0;
+                    Cliente ClienteObjC = new Cliente();
+                    if (ClienteDNI == null)
+                    {
+                        Cliente ClienteObjDefecto = new Cliente();
+                        ClienteObjDefecto = await Task.Run(() => clienservicio.GetClienteXNombreAsync("NA"));
+                        ClienteId = ClienteObjDefecto.Id;
+                    }
+                    else
+                    {
+                        Cliente ClienteObjDefecto = new Cliente();
+                        ClienteObjDefecto = await Task.Run(() => clienservicio.GetClienteXDNIAsync(ClienteDNI));
+                        ClienteId = ClienteObjDefecto.Id;
+                    }
+                    ProducVentaven.ClienteId = ClienteId;
+                    ProducVentaven.ProductoId = item.Id;
+                    lstProducVenta.Add(ProducVentaven);
+                }
+                bool ok = true;
+                foreach (var item in lstProducVenta)
+                {
+                    item.Id = 0;
+                    ok = await ventaServicio.InsertVentaAsync(item);
+                }
+                lstProd.Clear();
+                //await ShowInlineDialog("Correcto", "Venta registrada Correctamente");
+                //await msgconfirma("","");
+                NavigationManager.NavigateTo("VentaCrearPage", true);
+            }
+            else
+            {
+                //await ShowInlineDialog("Alerta", "Valor efectivo debe ser mayor o igual al total a facturar");
+                mensaje = "Valor efectivo debe ser mayor o igual al total a facturar";
+            }
+        }
+        else
+        {
+            //await ShowInlineDialog("informacion", "No hay informacion para facturar");
+        }
+    }
+    async Task Actualizar()
+    {
+        ClienteObj = await Task.Run(() => clienservicio.GetAllClienteAsync());
+    }
+    async Task EditRow(Producto order)
+    {
+        await grid.EditRow(order);
+        TotalFacturar = 0;
+        foreach (var item in lstProd)
+        {
+            TotalFacturar += item.Total;
+        }
+        calculo();
+    }
+    async Task SaveRow(Producto order)
+    {
+        total = order.Cantidad * order.PrecioVenta;
+        order.Total = total;
+        await grid.UpdateRow(order);
+        TotalFacturar = 0;
+        foreach (var item in lstProd)
+        {
+            TotalFacturar += item.Total;
+        }
+        calculo();
+    }
+    void CancelEdit(Producto order)
+    {
+        if (order == orderToInsert)
+        {
+            orderToInsert = null;
+        }
+        total = order.Cantidad * order.PrecioVenta;
+        order.Total = total;
+        grid.CancelEditRow(order);
+        TotalFacturar = 0;
+        foreach (var item in lstProd)
+        {
+            TotalFacturar += item.Total;
+        }
+        calculo();
+    }
+    async Task DeleteRow(Producto order)
+    {
+        if (order == orderToInsert)
+        {
+            orderToInsert = null;
+        }
+
+        if (lstProd.Contains(order))
+        {
+            // For demo purposes only
+            lstProd.Remove(order);
+
+            // For production
+            //dbContext.SaveChanges();
+
+            await grid.Reload();
+        }
+        else
+        {
+            grid.CancelEditRow(order);
+        }
+
+        TotalFacturar = 0;
+        foreach (var item in lstProd)
+        {
+            TotalFacturar += item.Total;
+        }
+        calculo();
+    }
+    protected ElementReference myDiv;
+    void OnChange(decimal efect)
+    {
+        calculoValidador(efect);
+    }
+    void calculoValidador(decimal efect)
+    {
+        //ValidaGuardar = 0;
+        Cambio = efect - TotalFacturar;
+
+        if (Efectivo < TotalFacturar)
+        {
+            mensaje = "Valor efectivo debe ser mayor o igual al total";
+            //ValidaGuardar++;
+        }
+        else
+        {
+            mensaje = "";
+            CreateProducto();
+        }
+    }
+    void calculo()
+    {
+        Cambio = Efectivo - TotalFacturar;
+    }
+    async Task ShowInlineDialog(string emcabezado, string Mensaje)
+    {
+        var result = await DialogService.OpenAsync(emcabezado, ds =>
+    @<div>
+        <p class="mb-4">@Mensaje</p>
+        <div class="row">
+            <div class="col">
+                <RadzenButton Text="Ok" Click="() => ds.Close(true)" Class="mr-1" Style="width: 80px;" />
+            </div>
+        </div>
+    </div>);
+    }
+    async Task msgconfirma(string emcabezado, string Mensaje)
+    {
+        var result = await DialogService.Confirm("Are you sure?", "MyTitle", new ConfirmOptions() { OkButtonText = "Ok", CancelButtonText = "No" });
+    }
+    List<string> datos = new List<string>();
+    private void Keypress(KeyboardEventArgs args)
+    {
+        var dato = args.Key;
+        if (args.Key == "Backspace")
+        {
+            if (datos.Count > 0)
+            {
+                datos.RemoveAt(datos.Count - 1);
+            }
+        }
+        else
+        {
+            if (dato.All(char.IsDigit))
+            {
+                datos.Add(dato);
+            }
+        }
+        string resu = "";
+        foreach (var item in datos)
+        {
+            resu += item;
+        }
+        if (resu== "")
+        {
+            resu = "0";
+        }
+        Cambio = Convert.ToDecimal(resu) - TotalFacturar;
+    }
+}
