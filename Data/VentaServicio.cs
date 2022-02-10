@@ -62,6 +62,14 @@ namespace SBX_WEB.Data
             return true;
         }
         #endregion
-        
+        #region  delete Producto
+        public async Task<bool> EliminarVentaAsync(Venta venta)
+        {
+            _appDBContext.Remove(venta);
+            await _appDBContext.SaveChangesAsync();
+            return true;
+        }
+        #endregion
+
     }
 }

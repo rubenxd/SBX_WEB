@@ -283,3 +283,7 @@ C:\Ruben\SBX_WEB\bin\Debug\netcoreapp3.1\Castle.Windsor.dll
 C:\Ruben\SBX_WEB\bin\Debug\netcoreapp3.1\Microsoft.DotNet.PlatformAbstractions.dll
 C:\Ruben\SBX_WEB\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyModel.dll
 C:\Ruben\SBX_WEB\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\RazorDeclaration\Shared\PanelMenu.razor.g.cs
+C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\Razor\Shared\PanelMenu.razor.g.cs
+C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\VentaPage.razor.g.cs
+C:\Ruben\SBX_WEB\obj\Debug\netcoreapp3.1\Razor\Pages\VentaPage.razor.g.cs

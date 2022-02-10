@@ -105,7 +105,7 @@ using Radzen;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 161 "C:\Ruben\SBX_WEB\Pages\VentaCrearPage.razor"
+#line 158 "C:\Ruben\SBX_WEB\Pages\VentaCrearPage.razor"
       
     public string InputValue { get; set; }
     RadzenDataGrid<Producto> grid;
@@ -601,7 +601,7 @@ using Radzen;
             __builder2.OpenElement(2, "p");
             __builder2.AddAttribute(3, "class", "mb-4");
 #nullable restore
-#line 646 "C:\Ruben\SBX_WEB\Pages\VentaCrearPage.razor"
+#line 643 "C:\Ruben\SBX_WEB\Pages\VentaCrearPage.razor"
 __builder2.AddContent(4, Mensaje);
 
 #line default
@@ -613,7 +613,7 @@ __builder2.AddContent(4, Mensaje);
             __builder2.CloseElement();
         }
 #nullable restore
-#line 652 "C:\Ruben\SBX_WEB\Pages\VentaCrearPage.razor"
+#line 649 "C:\Ruben\SBX_WEB\Pages\VentaCrearPage.razor"
           );
     }
     async Task msgconfirma(string emcabezado, string Mensaje)
